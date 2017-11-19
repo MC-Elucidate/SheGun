@@ -6,9 +6,9 @@ public class PlayerStatusManager : MonoBehaviour {
 
 
     [SerializeField]
-    private int MaxHealth = 10;
+    public int MaxHealth = 10;
     [SerializeField]
-    private int Health;
+    public int Health;
 
     private Vector2 respawnLocation;
     protected SpriteRenderer sprite;

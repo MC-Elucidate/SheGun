@@ -12,13 +12,13 @@ public class FireManager : MonoBehaviour {
     private GunDatsuManager gunDatsuManager;
 
     [SerializeField]
-    private int ammoCapacity = 2;
+    public int ammoCapacity = 2;
     [SerializeField]
     private float reloadTime = 2f;
     [SerializeField]
     private float firePower = 10f;
 
-    private int currentAmmo;
+    public int currentAmmo;
     private bool reloading = false;
 
     [SerializeField]
