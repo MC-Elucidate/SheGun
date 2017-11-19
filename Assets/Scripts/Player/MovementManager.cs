@@ -17,7 +17,7 @@ public class MovementManager : MonoBehaviour {
     [SerializeField]
     private float collisionKickback = 5f;
     [SerializeField]
-    private float dashSpeed = 12f;
+    private float dashSpeed = 15f;
 
     void Start () {
         playerRigidbody = GetComponent<Rigidbody2D>();

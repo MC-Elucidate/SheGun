@@ -15,6 +15,8 @@ public class GunDatsuManager : MonoBehaviour {
 
     public bool InGunDatsu { get; private set; }
     private Transform enemyToDodge;
+    private Vector2 castDirection;
+    private Rigidbody2D playerRigidbody;
 
     [SerializeField]
     private GameObject aimLine;
@@ -24,6 +26,7 @@ public class GunDatsuManager : MonoBehaviour {
         gunDatsuHitbox = GetComponentInChildren<GunDatsuHitbox>();
         movementManager = GetComponent<MovementManager>();
         playerCollider = GetComponent<Collider2D>();
+        playerRigidbody = GetComponent<Rigidbody2D>();
         InGunDatsu = false;
     }
 
@@ -45,15 +48,25 @@ public class GunDatsuManager : MonoBehaviour {
         movementManager.DashInDirectionOf(enemyToDodge);
         Time.timeScale = TimeSlowRatio;
         aimLineInstance = Instantiate(aimLine).GetComponent<LineRenderer>();
+        playerRigidbody.gravityScale = 0;
         InGunDatsu = true;
-        StartCoroutine(EndGunDatsu());
+        StartCoroutine(EndGunDatsuTimer());
     }
 
-    private IEnumerator EndGunDatsu()
+    private IEnumerator EndGunDatsuTimer()
     {
         yield return new WaitForSecondsRealtime(TimeSlowTime);
+        EndGunDatsu();
+    }
+
+    private void EndGunDatsu()
+    {
+        if (!InGunDatsu)
+            return;
+
         SetCollisionWithEnemies(true);
         Time.timeScale = 1;
+        playerRigidbody.gravityScale = 1;
         Destroy(aimLineInstance);
         InGunDatsu = false;
     }
@@ -69,9 +82,9 @@ public class GunDatsuManager : MonoBehaviour {
         if (!InGunDatsu)
             return;
 
+        castDirection = new Vector2();
         Vector3 target = new Vector3();
         RaycastHit2D hit;
-        Vector2 castDirection;
         if (horizontal == 0 && vertical == 0)
             target = enemyToDodge.position;
         else
@@ -87,5 +100,15 @@ public class GunDatsuManager : MonoBehaviour {
         }
 
         aimLineInstance.SetPositions(new Vector3[] { transform.position, target });
+    }
+
+    public Vector3 GetTargetPosition()
+    {
+        EndGunDatsu();
+
+        if (castDirection != new Vector2())
+            return castDirection.normalized;
+        else
+            return (enemyToDodge.position - transform.position).normalized;
     }
 }

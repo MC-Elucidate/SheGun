@@ -35,42 +35,11 @@ public class Bullet : MonoBehaviour {
         Destroy(gameObject);
     }
 
-    public void SetFireDirection(EDirection direction, float rotationOffset)
+    public void SetFireDirection(Vector2 direction, float rotationOffset)
     {
-        fireDirection = new Vector2();
+        fireDirection = direction;
         this.rotationOffset = rotationOffset;
 
-        if (direction == EDirection.Neutral)
-        {
-            fireDirection = new Vector2(1, 0);
-            return;
-        }
-
-        switch (direction)
-        {
-            case EDirection.Down:
-            case EDirection.DownLeft:
-            case EDirection.DownRight:
-                fireDirection.y = -1;
-                break;
-            case EDirection.Up:
-            case EDirection.UpLeft:
-            case EDirection.UpRight:
-                fireDirection.y = 1;
-                break;
-        }
-        switch (direction)
-        {
-            case EDirection.Left:
-            case EDirection.DownLeft:
-            case EDirection.UpLeft:
-                fireDirection.x = -1;
-                break;
-            case EDirection.Right:
-            case EDirection.DownRight:
-            case EDirection.UpRight:
-                fireDirection.x = 1;
-                break;
-        }
+        
     }
 }

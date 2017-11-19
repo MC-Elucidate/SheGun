@@ -72,7 +72,7 @@ public class PlayerInputManager : MonoBehaviour {
 
         fireManager.DirectionInput(directionPressed);
         if (firePressed)
-            fireManager.Fire();
+            fireManager.FirePressed();
     }
 
     private void ReloadInput()
@@ -100,7 +100,6 @@ public class PlayerInputManager : MonoBehaviour {
 
         float horInput = Input.GetAxis("GunHorizontal");
         float verInput = Input.GetAxis("GunVertical");
-        print(horInput + " : " + verInput);
         gunDatsuManager.AimInput(horInput, verInput);
     }
 }

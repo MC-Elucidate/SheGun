@@ -9,6 +9,7 @@ public class FireManager : MonoBehaviour {
     private EDirection direction = EDirection.Neutral;
     private MovementManager movementManager;
     private AudioSource audioSource;
+    private GunDatsuManager gunDatsuManager;
 
     [SerializeField]
     private int ammoCapacity = 2;
@@ -34,6 +35,7 @@ public class FireManager : MonoBehaviour {
         currentAmmo = ammoCapacity;
         movementManager = GetComponent<MovementManager>();
         audioSource = GetComponent<AudioSource>();
+        gunDatsuManager = GetComponent<GunDatsuManager>();
 	}
 	
 	void Update () {
@@ -45,16 +47,24 @@ public class FireManager : MonoBehaviour {
         this.direction = direction;
     }
 
-    public void Fire()
+    public void FirePressed()
     {
         if (currentAmmo == 0)
             return;
 
+        if (gunDatsuManager.InGunDatsu)
+            Fire(gunDatsuManager.GetTargetPosition());
+        else
+            Fire(DirectionHelper.GetDirectionVector(direction));
+    }
+
+    private void Fire(Vector3 velocityDirection)
+    {
         for (int i = 0; i < 5; i++)
         {
             GameObject gunfireInstance = GameObject.Instantiate(Gunfire, transform.position, Quaternion.identity);
             Bullet bullet = gunfireInstance.GetComponent<Bullet>();
-            bullet.SetFireDirection(direction, -10 + i*5);
+            bullet.SetFireDirection(velocityDirection, -6 + i * 3);
         }
         audioSource.PlayOneShot(fireSound);
         movementManager.KickBack(direction, firePower);
