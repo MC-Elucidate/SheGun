@@ -17,6 +17,7 @@ public class GunDatsuManager : MonoBehaviour {
     private Transform enemyToDodge;
     private Vector2 castDirection;
     private Rigidbody2D playerRigidbody;
+    private Animator animator;
 
     [SerializeField]
     private GameObject aimLine;
@@ -27,6 +28,7 @@ public class GunDatsuManager : MonoBehaviour {
         movementManager = GetComponent<MovementManager>();
         playerCollider = GetComponent<Collider2D>();
         playerRigidbody = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
         InGunDatsu = false;
     }
 
@@ -110,5 +112,10 @@ public class GunDatsuManager : MonoBehaviour {
             return castDirection.normalized;
         else
             return (enemyToDodge.position - transform.position).normalized;
+    }
+
+    void LateUpdate()
+    {
+        animator.SetBool("Dash", InGunDatsu);
     }
 }

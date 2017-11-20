@@ -10,6 +10,7 @@ public class FireManager : MonoBehaviour {
     private MovementManager movementManager;
     private AudioSource audioSource;
     private GunDatsuManager gunDatsuManager;
+    private Animator animator;
 
     [SerializeField]
     public int ammoCapacity = 2;
@@ -36,6 +37,7 @@ public class FireManager : MonoBehaviour {
         movementManager = GetComponent<MovementManager>();
         audioSource = GetComponent<AudioSource>();
         gunDatsuManager = GetComponent<GunDatsuManager>();
+        animator = GetComponent<Animator>();
 	}
 	
 	void Update () {
@@ -68,6 +70,7 @@ public class FireManager : MonoBehaviour {
         }
         audioSource.PlayOneShot(fireSound);
         movementManager.KickBack(direction, firePower);
+        animator.SetTrigger("Fire");
         --currentAmmo;
     }
 

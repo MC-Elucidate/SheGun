@@ -7,6 +7,8 @@ public class MovementManager : MonoBehaviour {
 
     private Rigidbody2D playerRigidbody;
     private PlayerStatusManager playerStatus;
+    private Animator animator;
+    private SpriteRenderer sprite;
     public bool IsGrounded { get; private set; }
     public float MovementInput = 0;
     public float regularRunSpeed = 10f;
@@ -22,6 +24,8 @@ public class MovementManager : MonoBehaviour {
     void Start () {
         playerRigidbody = GetComponent<Rigidbody2D>();
         playerStatus = GetComponent<PlayerStatusManager>();
+        animator = GetComponent<Animator>();
+        sprite = GetComponent<SpriteRenderer>();
         IsGrounded = false;
 	}
 	
@@ -108,5 +112,15 @@ public class MovementManager : MonoBehaviour {
     {
         Vector2 direction = (target.transform.position - transform.position).normalized;
         playerRigidbody.velocity = direction * dashSpeed;
+    }
+
+    void LateUpdate()
+    {
+        animator.SetFloat("VelocityX", playerRigidbody.velocity.x);
+        animator.SetFloat("VelocityY", playerRigidbody.velocity.y);
+        if (playerRigidbody.velocity.x < 0)
+            sprite.flipX = true;
+        else if (playerRigidbody.velocity.x > 0)
+            sprite.flipX = false;
     }
 }
