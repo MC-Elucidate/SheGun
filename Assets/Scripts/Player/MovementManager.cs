@@ -11,15 +11,21 @@ public class MovementManager : MonoBehaviour {
     private SpriteRenderer sprite;
     public bool IsGrounded { get; private set; }
     public float MovementInput = 0;
-    public float regularRunSpeed = 10f;
+    public float regularRunSpeed = 5f;
     public float runInputForce = 2f;
-    
+    private bool HasMovementFreedom;
+    private float timeSinceMovementDisabled;
+
     [SerializeField]
     private float JumpPower = 8f;
     [SerializeField]
     private float collisionKickback = 5f;
     [SerializeField]
     private float dashSpeed = 15f;
+    [SerializeField]
+    private float groundMovementForce = 2f;
+    [SerializeField]
+    private float airMovementForce = 0.8f;
 
     void Start () {
         playerRigidbody = GetComponent<Rigidbody2D>();
@@ -27,29 +33,42 @@ public class MovementManager : MonoBehaviour {
         animator = GetComponent<Animator>();
         sprite = GetComponent<SpriteRenderer>();
         IsGrounded = false;
+        HasMovementFreedom = true;
 	}
 	
 	void Update () {
+        CheckMovementFreedom();
         CheckIsGrounded();
         MovementUpdate();
+        print(playerRigidbody.velocity);
 	}
 
     private void MovementUpdate()
     {
+
+        playerRigidbody.drag = MovementInput != 0 ? 0 : (HasMovementFreedom ? (IsGrounded ? 5 : 0) : 0);
+
+        if (!HasMovementFreedom)
+            return;
+
         if (MovementInput != 0)
         {
-            if (Mathf.Abs(playerRigidbody.velocity.x) < regularRunSpeed)
+            if (Mathf.Abs(playerRigidbody.velocity.x) <= regularRunSpeed)
             {
-                playerRigidbody.AddForce(new Vector2(runInputForce * MovementInput, 0), ForceMode2D.Impulse);
+                if (IsGrounded)
+                    playerRigidbody.velocity = new Vector2(MovementInput * regularRunSpeed, playerRigidbody.velocity.y);
+                else
+                    playerRigidbody.AddForce(new Vector2(runInputForce * MovementInput, 0), ForceMode2D.Impulse);
             }
+            else if((MovementInput > 0 && (playerRigidbody.velocity.x < regularRunSpeed)) || (MovementInput < 0 && (playerRigidbody.velocity.x > -regularRunSpeed)))
+                playerRigidbody.AddForce(new Vector2(runInputForce * MovementInput, 0), ForceMode2D.Impulse);
         }
     }
 
     private void CheckIsGrounded()
     {
         IsGrounded = Mathf.Abs(playerRigidbody.velocity.y) < 0.0001;
-        playerRigidbody.drag = IsGrounded ? 5 : 0;
-        runInputForce = IsGrounded ? 2 : 0.1f;
+        runInputForce = HasMovementFreedom ? (IsGrounded ? groundMovementForce : airMovementForce) : 0;
     }
 
     public void Jump()
@@ -96,6 +115,7 @@ public class MovementManager : MonoBehaviour {
                 playerRigidbody.velocity = new Vector2(-power, playerRigidbody.velocity.y);
                 break;
         }
+        DisableMovement();
     }
 
     void OnCollisionEnter2D(Collision2D collision)
@@ -122,5 +142,23 @@ public class MovementManager : MonoBehaviour {
             sprite.flipX = true;
         else if (playerRigidbody.velocity.x > 0)
             sprite.flipX = false;
+    }
+
+    private void CheckMovementFreedom()
+    {
+        if (HasMovementFreedom)
+            return;
+
+        
+        if (timeSinceMovementDisabled > .75f)
+            HasMovementFreedom = true;
+        else
+            timeSinceMovementDisabled += Time.deltaTime;
+    }
+
+    private void DisableMovement()
+    {
+        HasMovementFreedom = false;
+        timeSinceMovementDisabled = 0;
     }
 }

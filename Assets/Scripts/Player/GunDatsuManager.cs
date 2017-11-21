@@ -11,7 +11,6 @@ public class GunDatsuManager : MonoBehaviour {
 
     private GunDatsuHitbox gunDatsuHitbox;
     private MovementManager movementManager;
-    private Collider2D playerCollider;
 
     public bool InGunDatsu { get; private set; }
     private Transform enemyToDodge;
@@ -26,7 +25,6 @@ public class GunDatsuManager : MonoBehaviour {
     void Start() {
         gunDatsuHitbox = GetComponentInChildren<GunDatsuHitbox>();
         movementManager = GetComponent<MovementManager>();
-        playerCollider = GetComponent<Collider2D>();
         playerRigidbody = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         InGunDatsu = false;
