@@ -19,7 +19,7 @@ public class MovementManager : MonoBehaviour {
     [SerializeField]
     private float JumpPower = 8f;
     [SerializeField]
-    private float collisionKickback = 5f;
+    private float damageKickbackPower = 5f;
     [SerializeField]
     private float dashSpeed = 15f;
     [SerializeField]
@@ -78,6 +78,10 @@ public class MovementManager : MonoBehaviour {
 
     }
 
+    public void KickBack(EDirection direction)
+    {
+        KickBack(direction, damageKickbackPower);
+    }
     public void KickBack(EDirection direction, float power)
     {
         switch (direction)
@@ -121,9 +125,7 @@ public class MovementManager : MonoBehaviour {
     {
         if (collision.gameObject.tag == "Enemy")
         {
-            playerStatus.ReceiveDamage(1);
-            EDirection directionOfContact = collision.transform.position.x >= transform.position.x ? EDirection.DownRight : EDirection.DownLeft;
-            KickBack(directionOfContact, collisionKickback);
+            playerStatus.ReceiveDamage(1, collision.transform);
         }
     }
 

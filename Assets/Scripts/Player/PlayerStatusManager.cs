@@ -12,6 +12,7 @@ public class PlayerStatusManager : MonoBehaviour {
 
     private Vector2 respawnLocation;
     protected SpriteRenderer sprite;
+    private MovementManager movementManager;
     private Color defaultColour;
     private Color damageFlashColour;
 
@@ -19,6 +20,7 @@ public class PlayerStatusManager : MonoBehaviour {
         Health = MaxHealth;
         respawnLocation = transform.position;
         sprite = GetComponent<SpriteRenderer>();
+        movementManager = GetComponent<MovementManager>();
         defaultColour = sprite.color;
         damageFlashColour = Color.red;
     }
@@ -27,11 +29,16 @@ public class PlayerStatusManager : MonoBehaviour {
 		
 	}
 
-    public void ReceiveDamage(int damage)
+    public void ReceiveDamage(int damage, Transform sourceOfDamage)
     {
         Health -= damage;
         if (Health <= 0)
+        {
             Respawn();
+            return;
+        }
+        EDirection directionOfContact = sourceOfDamage.position.x >= transform.position.x ? EDirection.DownRight : EDirection.DownLeft;
+        movementManager.KickBack(directionOfContact);
         StartCoroutine(DamageFlash());
     }
 

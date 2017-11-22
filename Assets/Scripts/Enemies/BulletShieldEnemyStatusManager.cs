@@ -68,7 +68,7 @@ public class BulletShieldEnemyStatusManager : EnemyStatusManager {
             if (!attacking)
             {
                 yield return new WaitForSecondsRealtime(3f);
-                if (Random.Range(1, 3) > 2)
+                if (Random.Range(1, 3) == 1)
                     SummonFallingProjectileOverPlayer();
                 else
                 {
@@ -126,7 +126,6 @@ public class BulletShieldEnemyStatusManager : EnemyStatusManager {
 
     private void EndAttack()
     {
-        print("fok");
         meleeHitbox.EndAttack();
     }
 }

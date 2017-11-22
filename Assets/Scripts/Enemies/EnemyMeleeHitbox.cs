@@ -16,7 +16,7 @@ public class EnemyMeleeHitbox : MonoBehaviour {
     void OnTriggerEnter2D(Collider2D other)
     {
         if (other.tag == "Player")
-            playerStatus.ReceiveDamage(damageOfAttack);
+            playerStatus.ReceiveDamage(damageOfAttack, transform.parent);
     }
 
     public void BeginAttack(int damage)
