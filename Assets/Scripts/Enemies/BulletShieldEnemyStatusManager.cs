@@ -20,6 +20,7 @@ public class BulletShieldEnemyStatusManager : EnemyStatusManager {
     private GameObject fallingProjectile;
 
     private EnemyMeleeHitbox meleeHitbox;
+    private EDirection forwardDirection = EDirection.Left;
     public bool attacking = false;
     
 
@@ -29,11 +30,13 @@ public class BulletShieldEnemyStatusManager : EnemyStatusManager {
         currentShieldHealth = maxShieldHealth;
         StartCoroutine(AttackLoop());
         meleeHitbox = GetComponentInChildren<EnemyMeleeHitbox>();
+        meleeHitbox.playerStatus = playerStatus;
     }
 
     void Update()
     {
-        attacking = animator.GetCurrentAnimatorStateInfo(0).IsName("Attack");
+       attacking = animator.GetCurrentAnimatorStateInfo(0).IsName("Attack");
+       SetSpriteDirection();
     }
 
     public override bool ReceiveBulletDamage(int damage)
@@ -65,7 +68,7 @@ public class BulletShieldEnemyStatusManager : EnemyStatusManager {
             if (!attacking)
             {
                 yield return new WaitForSecondsRealtime(3f);
-                if (Random.Range(1, 3) == 1)
+                if (Random.Range(1, 3) > 2)
                     SummonFallingProjectileOverPlayer();
                 else
                 {
@@ -82,7 +85,7 @@ public class BulletShieldEnemyStatusManager : EnemyStatusManager {
 
     private void AttackCast()
     {
-        meleeHitbox.AttackCast(playerStatus, meleeDamage);
+        meleeHitbox.BeginAttack(meleeDamage);
     }
 
     public override bool PerformingDesperationAttack()
@@ -99,5 +102,31 @@ public class BulletShieldEnemyStatusManager : EnemyStatusManager {
     private void SummonFallingProjectileOverPlayer()
     {
         Instantiate(fallingProjectile, player.transform.position + new Vector3(0, 5, 0), Quaternion.identity);
+    }
+
+    private void SetSpriteDirection()
+    {
+        if (player.transform.position.x < transform.position.x && forwardDirection == EDirection.Right)
+        {
+            FlipSprite();
+            forwardDirection = EDirection.Left;
+        }
+        else if (player.transform.position.x > transform.position.x && forwardDirection == EDirection.Left)
+        {
+            forwardDirection = EDirection.Right;
+            FlipSprite();
+        }
+            
+    }
+
+    private void FlipSprite()
+    {
+        transform.localScale = new Vector3(transform.localScale.x * -1, transform.localScale.y, 1);
+    }
+
+    private void EndAttack()
+    {
+        print("fok");
+        meleeHitbox.EndAttack();
     }
 }

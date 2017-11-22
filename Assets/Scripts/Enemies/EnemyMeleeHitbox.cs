@@ -3,24 +3,30 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyMeleeHitbox : MonoBehaviour {
+    
+    private Collider2D hitbox;
+    public PlayerStatusManager playerStatus;
+    int damageOfAttack;
 
-    bool playerInRange = false;
+    void Start()
+    {
+        hitbox = GetComponent<Collider2D>();
+    }
 
     void OnTriggerEnter2D(Collider2D other)
     {
         if (other.tag == "Player")
-            playerInRange = true;
+            playerStatus.ReceiveDamage(damageOfAttack);
     }
 
-    void OnTriggerExit2D(Collider2D other)
+    public void BeginAttack(int damage)
     {
-        if (other.tag == "Player")
-            playerInRange = false;
+        damageOfAttack = damage;
+        hitbox.enabled = true;
     }
 
-    public void AttackCast(PlayerStatusManager playerStatus, int damage)
+    public void EndAttack()
     {
-        if(playerInRange)
-            playerStatus.ReceiveDamage(damage);
+        hitbox.enabled = false;
     }
 }
