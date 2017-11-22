@@ -11,14 +11,15 @@ public class EnemyProjectile : MonoBehaviour {
     [SerializeField]
     private int damage = 1;
 
+    [SerializeField]
+    EProjectileType projectileType;
+
     public Vector3 TargetPosition;
     private Rigidbody2D projectileRigidbody;
 
 	void Start () {
         projectileRigidbody = GetComponent<Rigidbody2D>();
-        projectileRigidbody.velocity = (TargetPosition - transform.position).normalized * speed;
-        projectileRigidbody.gravityScale = 0;
-        Destroy(gameObject, 3f);
+        DoSetupForProjectileType();
 	}
 	
 	void Update () {
@@ -32,5 +33,19 @@ public class EnemyProjectile : MonoBehaviour {
             collision.gameObject.GetComponent<PlayerStatusManager>().ReceiveDamage(damage);
         }
         Destroy(gameObject);
+    }
+
+    private void DoSetupForProjectileType()
+    {
+        if (projectileType == EProjectileType.Ballistic)
+        {
+            projectileRigidbody.velocity = (TargetPosition - transform.position).normalized * speed;
+            projectileRigidbody.gravityScale = 0;
+            Destroy(gameObject, 3f);
+        }
+        else if (projectileType == EProjectileType.Falling)
+        {
+
+        }
     }
 }

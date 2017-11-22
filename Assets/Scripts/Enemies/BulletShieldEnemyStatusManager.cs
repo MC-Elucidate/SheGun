@@ -16,10 +16,11 @@ public class BulletShieldEnemyStatusManager : EnemyStatusManager {
     private int desperationThreshold = 5;
     [SerializeField]
     private GameObject desperationSignal;
-    
+    [SerializeField]
+    private GameObject fallingProjectile;
+
     private EnemyMeleeHitbox meleeHitbox;
     public bool attacking = false;
-
     
 
     protected override void Start()
@@ -64,12 +65,17 @@ public class BulletShieldEnemyStatusManager : EnemyStatusManager {
             if (!attacking)
             {
                 yield return new WaitForSecondsRealtime(3f);
-                if (Health <= desperationThreshold)
+                if (Random.Range(1, 3) == 1)
+                    SummonFallingProjectileOverPlayer();
+                else
                 {
-                    SignalDesperationAttack();
-                    yield return new WaitForSecondsRealtime(1f);
+                    if (Health <= desperationThreshold)
+                    {
+                        SignalDesperationAttack();
+                        yield return new WaitForSecondsRealtime(1f);
+                    }
+                    animator.SetTrigger("Attack");
                 }
-                animator.SetTrigger("Attack");
             }
         }
     }
@@ -88,5 +94,10 @@ public class BulletShieldEnemyStatusManager : EnemyStatusManager {
     {
         GameObject signal = Instantiate(desperationSignal, transform.position, Quaternion.identity);
         Destroy(signal, 1f);
+    }
+
+    private void SummonFallingProjectileOverPlayer()
+    {
+        Instantiate(fallingProjectile, player.transform.position + new Vector3(0, 5, 0), Quaternion.identity);
     }
 }

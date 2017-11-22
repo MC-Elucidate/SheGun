@@ -40,7 +40,6 @@ public class MovementManager : MonoBehaviour {
         CheckMovementFreedom();
         CheckIsGrounded();
         MovementUpdate();
-        print(playerRigidbody.velocity);
 	}
 
     private void MovementUpdate()
