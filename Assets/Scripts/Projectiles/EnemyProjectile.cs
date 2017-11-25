@@ -28,7 +28,7 @@ public class EnemyProjectile : MonoBehaviour {
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.tag == "Player")
+        if (collision.gameObject.tag == Constants.Tags.Player)
         {
             collision.gameObject.GetComponent<PlayerStatusManager>().ReceiveDamage(damage, transform);
         }

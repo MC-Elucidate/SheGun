@@ -11,8 +11,9 @@ public class GunDatsuManager : MonoBehaviour {
 
     private GunDatsuHitbox gunDatsuHitbox;
     private MovementManager movementManager;
-
+    
     public bool InGunDatsu { get; private set; }
+
     private Transform enemyToDodge;
     private Vector2 castDirection;
     private Rigidbody2D playerRigidbody;

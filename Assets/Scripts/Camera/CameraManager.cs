@@ -6,11 +6,14 @@ public class CameraManager : MonoBehaviour {
 
     private Transform playerTransform;
 
+    [SerializeField]
+    private float yOffset;
+
 	void Start () {
-        playerTransform = GameObject.FindGameObjectWithTag("Player").transform;	
+        playerTransform = GameObject.FindGameObjectWithTag(Constants.Tags.Player).transform;
 	}
 	
 	void Update () {
-        this.transform.position = new Vector3(playerTransform.position.x, playerTransform.position.y, playerTransform.position.z - 5);
+        this.transform.position = new Vector3(playerTransform.position.x, playerTransform.position.y + yOffset, transform.position.z);
 	}
 }

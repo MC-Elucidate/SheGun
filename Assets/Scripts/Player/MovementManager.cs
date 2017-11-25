@@ -9,10 +9,17 @@ public class MovementManager : MonoBehaviour {
     private PlayerStatusManager playerStatus;
     private Animator animator;
     private SpriteRenderer sprite;
-    public bool IsGrounded { get; private set; }
+
+    [ReadOnly]
+    public bool IsGrounded;
+    
+    [HideInInspector]
     public float MovementInput = 0;
-    public float regularRunSpeed = 5f;
-    public float runInputForce = 2f;
+    [SerializeField]
+    private float regularRunSpeed = 5f;
+    [SerializeField]
+    private float runInputForce = 2f;
+
     private bool HasMovementFreedom;
     private float timeSinceMovementDisabled;
 
@@ -121,13 +128,13 @@ public class MovementManager : MonoBehaviour {
         DisableMovement();
     }
 
-    void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.tag == "Enemy")
-        {
-            playerStatus.ReceiveDamage(1, collision.transform);
-        }
-    }
+    //void OnCollisionEnter2D(Collision2D collision)
+    //{
+    //    if (collision.gameObject.tag == "Enemy")
+    //    {
+    //        playerStatus.ReceiveDamage(1, collision.transform);
+    //    }
+    //}
 
     public void DashInDirectionOf(Transform target)
     {

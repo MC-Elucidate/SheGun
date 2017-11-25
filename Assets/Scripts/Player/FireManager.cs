@@ -18,7 +18,7 @@ public class FireManager : MonoBehaviour {
     private float reloadTime = 2f;
     [SerializeField]
     private float firePower = 10f;
-
+    
     public int currentAmmo;
     private bool reloading = false;
 

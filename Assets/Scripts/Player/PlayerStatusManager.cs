@@ -7,11 +7,12 @@ public class PlayerStatusManager : MonoBehaviour {
 
     [SerializeField]
     public int MaxHealth = 10;
+    [ReadOnly]
     [SerializeField]
     public int Health;
 
     private Vector2 respawnLocation;
-    protected SpriteRenderer sprite;
+    private SpriteRenderer sprite;
     private MovementManager movementManager;
     private Color defaultColour;
     private Color damageFlashColour;

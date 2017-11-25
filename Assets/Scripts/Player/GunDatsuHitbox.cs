@@ -13,13 +13,13 @@ public class GunDatsuHitbox : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.tag == "Enemy")
+        if (other.tag == Constants.Tags.Enemy)
             EnemiesInRange.Add(other.GetComponent<EnemyStatusManager>());
     }
 
     void OnTriggerExit2D(Collider2D other)
     {
-        if (other.tag == "Enemy")
+        if (other.tag == Constants.Tags.Enemy)
             EnemiesInRange.Remove(other.GetComponent<EnemyStatusManager>());
     }
 
