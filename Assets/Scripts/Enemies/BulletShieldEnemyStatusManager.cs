@@ -68,6 +68,10 @@ public class BulletShieldEnemyStatusManager : EnemyStatusManager {
             if (!attacking)
             {
                 yield return new WaitForSecondsRealtime(3f);
+
+                if ((player.transform.position - transform.position).sqrMagnitude > 50)
+                    continue;
+
                 if (Random.Range(1, 3) == 1)
                     SummonFallingProjectileOverPlayer();
                 else
