@@ -22,6 +22,8 @@ public class MovementManager : MonoBehaviour {
 
     private bool HasMovementFreedom;
     private float timeSinceMovementDisabled;
+    [SerializeField]
+    private float movementDisabledTime = .25f;
 
     [SerializeField]
     private float JumpPower = 8f;
@@ -96,7 +98,7 @@ public class MovementManager : MonoBehaviour {
             case EDirection.Down:
             case EDirection.DownLeft:
             case EDirection.DownRight:
-                playerRigidbody.velocity = new Vector2(0, power);
+                playerRigidbody.velocity = new Vector2(0, power*2);
                 break;
         }
 
@@ -115,11 +117,15 @@ public class MovementManager : MonoBehaviour {
         switch (direction)
         {
             case EDirection.Left:
+                playerRigidbody.velocity = new Vector2(power, 0);
+                break;
             case EDirection.UpLeft:
             case EDirection.DownLeft:
                 playerRigidbody.velocity = new Vector2(power, playerRigidbody.velocity.y);
                 break;
             case EDirection.Right:
+                playerRigidbody.velocity = new Vector2(-power, 0);
+                break;
             case EDirection.UpRight:
             case EDirection.DownRight:
                 playerRigidbody.velocity = new Vector2(-power, playerRigidbody.velocity.y);
@@ -158,7 +164,7 @@ public class MovementManager : MonoBehaviour {
             return;
 
         
-        if (timeSinceMovementDisabled > .75f)
+        if (timeSinceMovementDisabled > movementDisabledTime)
             HasMovementFreedom = true;
         else
             timeSinceMovementDisabled += Time.deltaTime;

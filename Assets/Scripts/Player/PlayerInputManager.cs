@@ -24,7 +24,7 @@ public class PlayerInputManager : MonoBehaviour {
     {
         MovementInput();
         FireInput();
-        ReloadInput();
+        //ReloadInput();
         MeleeInput();
         JumpInput();
         GunDatsuInput();

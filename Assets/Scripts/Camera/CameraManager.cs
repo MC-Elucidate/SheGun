@@ -9,11 +9,30 @@ public class CameraManager : MonoBehaviour {
     [SerializeField]
     private float yOffset;
 
-	void Start () {
+    [SerializeField]
+    private bool yLock;
+    [SerializeField]
+    private bool xLock;
+
+    void Start () {
         playerTransform = GameObject.FindGameObjectWithTag(Constants.Tags.Player).transform;
-	}
+        this.transform.position = new Vector3(playerTransform.position.x, playerTransform.position.y + yOffset, transform.position.z);
+    }
 	
 	void Update () {
-        this.transform.position = new Vector3(playerTransform.position.x, playerTransform.position.y + yOffset, transform.position.z);
+        float newX, newY;
+
+        if (xLock)
+            newX = transform.position.x;
+        else
+            newX = playerTransform.position.x;
+
+        if (yLock)
+            newY = transform.position.y;
+        else
+            newY = playerTransform.position.y + yOffset;
+
+        
+        this.transform.position = new Vector3(newX, newY, transform.position.z);
 	}
 }

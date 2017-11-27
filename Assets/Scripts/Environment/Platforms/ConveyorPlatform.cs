@@ -25,7 +25,7 @@ public class ConveyorPlatform : MonoBehaviour {
 	
 	void Update ()
     {
-        platformRigidbody.velocity = new Vector2(speed, 0);
+        //platformRigidbody.velocity = new Vector2(speed, 0);
     }
 
     private enum EConveyorState

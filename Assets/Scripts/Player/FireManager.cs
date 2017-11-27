@@ -11,15 +11,12 @@ public class FireManager : MonoBehaviour {
     private AudioSource audioSource;
     private GunDatsuManager gunDatsuManager;
     private Animator animator;
-
-    [SerializeField]
-    public int ammoCapacity = 2;
-    [SerializeField]
-    private float reloadTime = 2f;
-    [SerializeField]
-    private float firePower = 10f;
     
-    public int currentAmmo;
+    [SerializeField]
+    private float reloadTime = 1.5f;
+    [SerializeField]
+    private float kickbackPower = 10f;
+    
     private bool reloading = false;
 
     [SerializeField]
@@ -27,13 +24,8 @@ public class FireManager : MonoBehaviour {
 
     [SerializeField]
     private AudioClip fireSound;
-    [SerializeField]
-    private AudioClip reloadingSound;
-    [SerializeField]
-    private AudioClip reloadCompleteSound;
 
     void Start () {
-        currentAmmo = ammoCapacity;
         movementManager = GetComponent<MovementManager>();
         audioSource = GetComponent<AudioSource>();
         gunDatsuManager = GetComponent<GunDatsuManager>();
@@ -51,7 +43,7 @@ public class FireManager : MonoBehaviour {
 
     public void FirePressed()
     {
-        if (currentAmmo == 0)
+        if (reloading)
             return;
 
         if (gunDatsuManager.InGunDatsu)
@@ -69,9 +61,12 @@ public class FireManager : MonoBehaviour {
             bullet.SetFireDirection(velocityDirection, -6 + i * 3);
         }
         audioSource.PlayOneShot(fireSound);
-        movementManager.KickBack(direction, firePower);
+
+        if(!movementManager.IsGrounded)
+            movementManager.KickBack(direction, kickbackPower);
+
         animator.SetTrigger("Fire");
-        --currentAmmo;
+        StartReload();
     }
 
     public void StartReload()
@@ -84,11 +79,8 @@ public class FireManager : MonoBehaviour {
 
     private IEnumerator Reload()
     {
-        audioSource.PlayOneShot(reloadingSound);
         reloading = true;
         yield return new WaitForSecondsRealtime(reloadTime);
-        currentAmmo = ammoCapacity;
         reloading = false;
-        audioSource.PlayOneShot(reloadCompleteSound);
     }
 }
