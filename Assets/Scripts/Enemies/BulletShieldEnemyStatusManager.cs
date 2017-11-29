@@ -71,18 +71,14 @@ public class BulletShieldEnemyStatusManager : EnemyStatusManager {
 
                 if ((player.transform.position - transform.position).sqrMagnitude > 50)
                     continue;
-
-                if (Random.Range(1, 3) == 1)
-                    SummonFallingProjectileOverPlayer();
-                else
+                
+                if (Health <= desperationThreshold)
                 {
-                    if (Health <= desperationThreshold)
-                    {
-                        SignalDesperationAttack();
-                        yield return new WaitForSecondsRealtime(1f);
-                    }
-                    animator.SetTrigger("Attack");
+                    SignalDesperationAttack();
+                    yield return new WaitForSecondsRealtime(1f);
                 }
+                animator.SetTrigger("Attack");
+                
             }
         }
     }

@@ -20,8 +20,6 @@ public class MovementManager : MonoBehaviour {
     public float MovementInput = 0;
     [SerializeField]
     private float regularRunSpeed = 5f;
-    [SerializeField]
-    private float runInputForce = 2f;
 
     private bool HasMovementFreedom;
     private float timeSinceMovementDisabled;
@@ -34,10 +32,6 @@ public class MovementManager : MonoBehaviour {
     private float damageKickbackPower = 5f;
     [SerializeField]
     private float dashSpeed = 15f;
-    [SerializeField]
-    private float groundMovementForce = 2f;
-    [SerializeField]
-    private float airMovementForce = 0.8f;
 
     void Start () {
         playerRigidbody = GetComponent<Rigidbody2D>();
@@ -52,34 +46,21 @@ public class MovementManager : MonoBehaviour {
         CheckMovementFreedom();
         CheckIsGrounded();
         MovementUpdate();
+        SetSpriteDirection();
 	}
 
     private void MovementUpdate()
     {
-
-        playerRigidbody.drag = MovementInput != 0 ? 0 : (HasMovementFreedom ? (IsGrounded ? 5 : 0) : 0);
-
         if (!HasMovementFreedom)
             return;
 
-        if (MovementInput != 0)
-        {
-            if (Mathf.Abs(playerRigidbody.velocity.x) <= regularRunSpeed)
-            {
-                if (IsGrounded)
-                    playerRigidbody.velocity = new Vector2(MovementInput * regularRunSpeed, playerRigidbody.velocity.y);
-                else
-                    playerRigidbody.AddForce(new Vector2(runInputForce * MovementInput, 0), ForceMode2D.Impulse);
-            }
-            else if((MovementInput > 0 && (playerRigidbody.velocity.x < regularRunSpeed)) || (MovementInput < 0 && (playerRigidbody.velocity.x > -regularRunSpeed)))
-                playerRigidbody.AddForce(new Vector2(runInputForce * MovementInput, 0), ForceMode2D.Impulse);
-        }
+        if (MovementInput != 0 && HasMovementFreedom)
+            playerRigidbody.velocity = new Vector2(MovementInput * regularRunSpeed, playerRigidbody.velocity.y);
     }
 
     private void CheckIsGrounded()
     {
         IsGrounded = Mathf.Abs(playerRigidbody.velocity.y) < 0.0001;
-        runInputForce = HasMovementFreedom ? (IsGrounded ? groundMovementForce : airMovementForce) : 0;
     }
 
     public void Jump()
@@ -87,7 +68,6 @@ public class MovementManager : MonoBehaviour {
         if (!IsGrounded)
             return;
         playerRigidbody.velocity = new Vector2(playerRigidbody.velocity.x, JumpPower);
-
     }
 
     public void KickBack(EDirection direction)
@@ -137,14 +117,6 @@ public class MovementManager : MonoBehaviour {
         DisableMovement();
     }
 
-    //void OnCollisionEnter2D(Collision2D collision)
-    //{
-    //    if (collision.gameObject.tag == "Enemy")
-    //    {
-    //        playerStatus.ReceiveDamage(1, collision.transform);
-    //    }
-    //}
-
     public void DashInDirectionOf(Transform target)
     {
         Vector2 direction = (target.transform.position - transform.position).normalized;
@@ -155,16 +127,25 @@ public class MovementManager : MonoBehaviour {
     {
         animator.SetFloat("VelocityX", playerRigidbody.velocity.x);
         animator.SetFloat("VelocityY", playerRigidbody.velocity.y);
-        if (playerRigidbody.velocity.x < 0)
+    }
+
+    private void SetSpriteDirection()
+    {
+        if (playerRigidbody.velocity.x < 0 && forwardDirection == EDirection.Right)
         {
             forwardDirection = EDirection.Left;
-            sprite.flipX = true;
+            FlipSprite();
         }
-        else if (playerRigidbody.velocity.x > 0)
+        else if (playerRigidbody.velocity.x > 0 && forwardDirection == EDirection.Left)
         {
             forwardDirection = EDirection.Right;
-            sprite.flipX = false;
+            FlipSprite();
         }
+    }
+
+    private void FlipSprite()
+    {
+        transform.localScale = new Vector3(transform.localScale.x * -1, transform.localScale.y, 1);
     }
 
     private void CheckMovementFreedom()
@@ -172,7 +153,6 @@ public class MovementManager : MonoBehaviour {
         if (HasMovementFreedom)
             return;
 
-        
         if (timeSinceMovementDisabled > movementDisabledTime)
             HasMovementFreedom = true;
         else
