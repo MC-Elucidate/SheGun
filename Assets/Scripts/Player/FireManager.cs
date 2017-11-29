@@ -12,18 +12,13 @@ public class FireManager : MonoBehaviour {
     private GunDatsuManager gunDatsuManager;
     private Animator animator;
     
-    [SerializeField]
-    private float reloadTime = 1.5f;
-    [SerializeField]
-    private float kickbackPower = 10f;
-    
     private bool reloading = false;
 
     [SerializeField]
     private GameObject Gunfire;
 
     [SerializeField]
-    private AudioClip fireSound;
+    private AudioClip shotgunFireSound;
 
     void Start () {
         movementManager = GetComponent<MovementManager>();
@@ -43,16 +38,13 @@ public class FireManager : MonoBehaviour {
 
     public void FirePressed()
     {
-        if (reloading)
-            return;
-
         if (gunDatsuManager.InGunDatsu)
-            Fire(gunDatsuManager.GetTargetPosition());
+            FirePistol(gunDatsuManager.GetTargetPosition());
         else
-            Fire(DirectionHelper.GetDirectionVector(direction));
+            FirePistol(DirectionHelper.GetDirectionVector(movementManager.forwardDirection));
     }
 
-    private void Fire(Vector3 velocityDirection)
+    private void FireShotgun(Vector3 velocityDirection)
     {
         for (int i = 0; i < 5; i++)
         {
@@ -60,27 +52,14 @@ public class FireManager : MonoBehaviour {
             Bullet bullet = gunfireInstance.GetComponent<Bullet>();
             bullet.SetFireDirection(velocityDirection, -6 + i * 3);
         }
-        audioSource.PlayOneShot(fireSound);
-
-        if(!movementManager.IsGrounded)
-            movementManager.KickBack(direction, kickbackPower);
-
+        audioSource.PlayOneShot(shotgunFireSound);
         animator.SetTrigger("Fire");
-        StartReload();
     }
 
-    public void StartReload()
+    private void FirePistol(Vector3 velocityDirection)
     {
-        if (reloading)
-            return;
-
-        StartCoroutine(Reload());
-    }
-
-    private IEnumerator Reload()
-    {
-        reloading = true;
-        yield return new WaitForSecondsRealtime(reloadTime);
-        reloading = false;
+        GameObject gunfireInstance = GameObject.Instantiate(Gunfire, transform.position, Quaternion.identity);
+        Bullet bullet = gunfireInstance.GetComponent<Bullet>();
+        bullet.SetFireDirection(velocityDirection, 0);
     }
 }

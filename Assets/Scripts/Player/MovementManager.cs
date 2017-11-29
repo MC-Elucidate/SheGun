@@ -12,6 +12,9 @@ public class MovementManager : MonoBehaviour {
 
     [ReadOnly]
     public bool IsGrounded;
+
+    [ReadOnly]
+    public EDirection forwardDirection = EDirection.Right;
     
     [HideInInspector]
     public float MovementInput = 0;
@@ -153,9 +156,15 @@ public class MovementManager : MonoBehaviour {
         animator.SetFloat("VelocityX", playerRigidbody.velocity.x);
         animator.SetFloat("VelocityY", playerRigidbody.velocity.y);
         if (playerRigidbody.velocity.x < 0)
+        {
+            forwardDirection = EDirection.Left;
             sprite.flipX = true;
+        }
         else if (playerRigidbody.velocity.x > 0)
+        {
+            forwardDirection = EDirection.Right;
             sprite.flipX = false;
+        }
     }
 
     private void CheckMovementFreedom()

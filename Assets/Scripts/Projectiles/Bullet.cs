@@ -39,7 +39,5 @@ public class Bullet : MonoBehaviour {
     {
         fireDirection = direction;
         this.rotationOffset = rotationOffset;
-
-        
     }
 }

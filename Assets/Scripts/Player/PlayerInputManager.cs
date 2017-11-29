@@ -24,7 +24,6 @@ public class PlayerInputManager : MonoBehaviour {
     {
         MovementInput();
         FireInput();
-        //ReloadInput();
         MeleeInput();
         JumpInput();
         GunDatsuInput();
@@ -73,12 +72,6 @@ public class PlayerInputManager : MonoBehaviour {
         fireManager.DirectionInput(directionPressed);
         if (firePressed)
             fireManager.FirePressed();
-    }
-
-    private void ReloadInput()
-    {
-        if (Input.GetButtonDown("Reload"))
-            fireManager.StartReload();
     }
 
     private void JumpInput()
