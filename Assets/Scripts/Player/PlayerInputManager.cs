@@ -39,7 +39,6 @@ public class PlayerInputManager : MonoBehaviour {
     {
         float horizontalInput = Input.GetAxis("Horizontal");
         float verticalInput = Input.GetAxis("Vertical");
-        bool firePressed = Input.GetButtonDown("Fire");
         
         if (verticalInput == 1)
         {
@@ -70,8 +69,10 @@ public class PlayerInputManager : MonoBehaviour {
         }
 
         fireManager.DirectionInput(directionPressed);
-        if (firePressed)
+        if (Input.GetButtonDown("Fire"))
             fireManager.FirePressed();
+        if (Input.GetButtonUp("Fire"))
+            fireManager.FireReleased();
     }
 
     private void JumpInput()
@@ -88,8 +89,14 @@ public class PlayerInputManager : MonoBehaviour {
 
     private void GunDatsuInput()
     {
+
         if (Input.GetButtonDown("Dodge"))
             gunDatsuManager.DodgePressed();
+
+        if (Input.GetButtonDown("GunDatsu"))
+            gunDatsuManager.GunDatsuPressed();
+        if (Input.GetButtonUp("GunDatsu"))
+            gunDatsuManager.GunDatsuReleased();
 
         float horInput = Input.GetAxis("GunHorizontal");
         float verInput = Input.GetAxis("GunVertical");

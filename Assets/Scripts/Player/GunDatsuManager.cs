@@ -5,9 +5,13 @@ using UnityEngine;
 public class GunDatsuManager : MonoBehaviour {
 
     [SerializeField]
-    private float TimeSlowRatio = 0.5f;
+    private float timeSlowRatio = 0.1f;
+
     [SerializeField]
-    private float TimeSlowTime = 3f;
+    private float gunDatsuMeterMax = 100;
+    private float gunDatsuMeterCurrent;
+    [SerializeField]
+    private float gunDatsuDrainAmountPerSecond = 20;
 
     private GunDatsuHitbox gunDatsuHitbox;
     private MovementManager movementManager;
@@ -29,47 +33,53 @@ public class GunDatsuManager : MonoBehaviour {
         playerRigidbody = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         InGunDatsu = false;
+        gunDatsuMeterCurrent = gunDatsuMeterMax;
     }
 
     void Update() {
+        if (InGunDatsu)
+            DrainMeter();
+    }
 
+    private void DrainMeter()
+    {
+        gunDatsuMeterCurrent -= gunDatsuDrainAmountPerSecond * Time.unscaledDeltaTime;
+        if (gunDatsuMeterCurrent <= 0)
+            EndGunDatsu();
     }
 
     public void DodgePressed()
     {
+        return;
         StartGunDatsu();
-    }
-
-    private void StartGunDatsu()
-    {
         enemyToDodge = gunDatsuHitbox.FindEnemyInDesperationAttackInRange();
         if (enemyToDodge == null)
             return;
         SetCollisionWithEnemies(false);
-        movementManager.DashInDirectionOf(enemyToDodge);
-        Time.timeScale = TimeSlowRatio;
-        aimLineInstance = Instantiate(aimLine).GetComponent<LineRenderer>();
         playerRigidbody.gravityScale = 0;
-        InGunDatsu = true;
-        StartCoroutine(EndGunDatsuTimer());
+        movementManager.DashInDirectionOf(enemyToDodge);
     }
 
-    private IEnumerator EndGunDatsuTimer()
+    private void StartGunDatsu()
     {
-        yield return new WaitForSecondsRealtime(TimeSlowTime);
-        EndGunDatsu();
+        
+        Time.timeScale = timeSlowRatio;
+        aimLineInstance = Instantiate(aimLine).GetComponent<LineRenderer>();
+        InGunDatsu = true;
+        animator.SetBool("Dash", InGunDatsu);
     }
+
 
     private void EndGunDatsu()
     {
         if (!InGunDatsu)
             return;
-
-        SetCollisionWithEnemies(true);
+        
         Time.timeScale = 1;
-        playerRigidbody.gravityScale = 1;
-        Destroy(aimLineInstance);
+        Destroy(aimLineInstance.gameObject);
         InGunDatsu = false;
+        gunDatsuMeterCurrent = gunDatsuMeterMax;
+        animator.SetBool("Dash", InGunDatsu);
     }
 
     private void SetCollisionWithEnemies(bool shouldCollide)
@@ -86,35 +96,40 @@ public class GunDatsuManager : MonoBehaviour {
         castDirection = new Vector2();
         Vector3 target = new Vector3();
         RaycastHit2D hit;
+
         if (horizontal == 0 && vertical == 0)
-            target = enemyToDodge.position;
+        {
+            castDirection = DirectionHelper.GetDirectionVector(movementManager.forwardDirection);
+        }
         else
         {
             Vector2 playerPos2D = new Vector2(transform.position.x, transform.position.y);
             castDirection = (playerPos2D + new Vector2(horizontal, vertical)) - playerPos2D;
-            hit = Physics2D.Raycast(transform.position, castDirection, Mathf.Infinity, LayerMask.GetMask("Enemy"));
-            if (hit)
-                target = hit.point;
-            else
-                target = castDirection * 10000;
-           
         }
+        hit = Physics2D.Raycast(transform.position, castDirection, Mathf.Infinity, LayerMask.GetMask("Enemy"));
+        if (hit)
+            target = hit.point;
+        else
+            target = castDirection * 10000;
 
         aimLineInstance.SetPositions(new Vector3[] { transform.position, target });
     }
 
     public Vector3 GetTargetPosition()
     {
-        EndGunDatsu();
-
         if (castDirection != new Vector2())
             return castDirection.normalized;
         else
             return (enemyToDodge.position - transform.position).normalized;
     }
 
-    void LateUpdate()
+    public void GunDatsuPressed()
     {
-        animator.SetBool("Dash", InGunDatsu);
+        StartGunDatsu();
+    }
+
+    public void GunDatsuReleased()
+    {
+        EndGunDatsu();
     }
 }

@@ -15,10 +15,20 @@ public class FireManager : MonoBehaviour {
     private bool reloading = false;
 
     [SerializeField]
+    private float chargeTimeMax;
+    private bool charging = false;
+    private float chargeTimeCurrent = 0;
+
+    [SerializeField]
     private GameObject Gunfire;
 
     [SerializeField]
     private AudioClip shotgunFireSound;
+    [SerializeField]
+    private AudioClip shotgunChargedSound;
+
+    [SerializeField]
+    private int angleBetweenShotgunShells;
 
     void Start () {
         movementManager = GetComponent<MovementManager>();
@@ -28,8 +38,22 @@ public class FireManager : MonoBehaviour {
 	}
 	
 	void Update () {
-		
+        ChargeUpdate();
 	}
+
+    private void ChargeUpdate()
+    {
+        if (charging)
+        {
+            chargeTimeCurrent += Time.unscaledDeltaTime;
+
+            if (chargeTimeCurrent >= chargeTimeMax)
+            {
+                charging = false;
+                audioSource.PlayOneShot(shotgunChargedSound);
+            }
+        }
+    }
 
     public void DirectionInput(EDirection direction)
     {
@@ -38,10 +62,28 @@ public class FireManager : MonoBehaviour {
 
     public void FirePressed()
     {
-        if (gunDatsuManager.InGunDatsu)
-            FirePistol(gunDatsuManager.GetTargetPosition());
+        charging = true;
+    }
+
+    public void FireReleased()
+    {
+        if (chargeTimeCurrent >= chargeTimeMax)
+        {
+            if (gunDatsuManager.InGunDatsu)
+                FireShotgun(gunDatsuManager.GetTargetPosition());
+            else
+                FireShotgun(DirectionHelper.GetDirectionVector(movementManager.forwardDirection));
+        }
         else
-            FirePistol(DirectionHelper.GetDirectionVector(movementManager.forwardDirection));
+        {
+            if (gunDatsuManager.InGunDatsu)
+                FirePistol(gunDatsuManager.GetTargetPosition());
+            else
+                FirePistol(DirectionHelper.GetDirectionVector(movementManager.forwardDirection));
+        }
+
+        charging = false;
+        chargeTimeCurrent = 0;
     }
 
     private void FireShotgun(Vector3 velocityDirection)
@@ -50,7 +92,7 @@ public class FireManager : MonoBehaviour {
         {
             GameObject gunfireInstance = GameObject.Instantiate(Gunfire, transform.position, Quaternion.identity);
             Bullet bullet = gunfireInstance.GetComponent<Bullet>();
-            bullet.SetFireDirection(velocityDirection, -6 + i * 3);
+            bullet.SetFireDirection(velocityDirection, (angleBetweenShotgunShells*-2) + i * angleBetweenShotgunShells);
         }
         audioSource.PlayOneShot(shotgunFireSound);
         animator.SetTrigger("Fire");
