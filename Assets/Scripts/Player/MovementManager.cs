@@ -33,6 +33,8 @@ public class MovementManager : MonoBehaviour {
     [SerializeField]
     private float dashSpeed = 15f;
 
+    private float regularGravityScale;
+
     void Start () {
         playerRigidbody = GetComponent<Rigidbody2D>();
         playerStatus = GetComponent<PlayerStatusManager>();
@@ -40,6 +42,7 @@ public class MovementManager : MonoBehaviour {
         sprite = GetComponent<SpriteRenderer>();
         IsGrounded = false;
         HasMovementFreedom = true;
+        regularGravityScale = playerRigidbody.gravityScale;
 	}
 	
 	void Update () {
@@ -163,5 +166,16 @@ public class MovementManager : MonoBehaviour {
     {
         HasMovementFreedom = false;
         timeSinceMovementDisabled = 0;
+    }
+
+    public void StartGunDatsuMovement()
+    {
+        playerRigidbody.velocity = new Vector2(0, 0);
+        playerRigidbody.gravityScale = 0;
+    }
+
+    public void EndGunDatsuMovement()
+    {
+        playerRigidbody.gravityScale = regularGravityScale;
     }
 }
