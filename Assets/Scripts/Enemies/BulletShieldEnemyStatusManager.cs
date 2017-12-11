@@ -1,8 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BulletShieldEnemyStatusManager : EnemyStatusManager {
+public class BulletShieldEnemyStatusManager : EnemyStatusManager, IEntityWithWeakpoint {
 
     [SerializeField]
     private Color vulnerableColour = Color.white;
@@ -28,7 +29,7 @@ public class BulletShieldEnemyStatusManager : EnemyStatusManager {
     {
         base.Start();
         currentShieldHealth = maxShieldHealth;
-        StartCoroutine(AttackLoop());
+        //StartCoroutine(AttackLoop());
         meleeHitbox = GetComponentInChildren<EnemyMeleeHitbox>();
         meleeHitbox.playerStatus = playerStatus;
     }
@@ -127,5 +128,10 @@ public class BulletShieldEnemyStatusManager : EnemyStatusManager {
     private void EndAttack()
     {
         meleeHitbox.EndAttack();
+    }
+
+    public void WeakpointHit(WeakPoint weakpointThatWasHit)
+    {
+        print("ITAI!");
     }
 }

@@ -21,6 +21,8 @@ public class FireManager : MonoBehaviour {
 
     [SerializeField]
     private GameObject Gunfire;
+    [SerializeField]
+    private GameObject GunDatsuGunfire;
 
     [SerializeField]
     private AudioClip shotgunFireSound;
@@ -88,9 +90,10 @@ public class FireManager : MonoBehaviour {
 
     private void FireShotgun(Vector3 velocityDirection)
     {
+        GameObject projectileToFire = gunDatsuManager.InGunDatsu ? GunDatsuGunfire : Gunfire;
         for (int i = 0; i < 5; i++)
         {
-            GameObject gunfireInstance = GameObject.Instantiate(Gunfire, transform.position, Quaternion.identity);
+            GameObject gunfireInstance = GameObject.Instantiate(projectileToFire, transform.position, Quaternion.identity);
             Bullet bullet = gunfireInstance.GetComponent<Bullet>();
             bullet.SetFireDirection(velocityDirection, (angleBetweenShotgunShells*-2) + i * angleBetweenShotgunShells);
         }
@@ -100,7 +103,8 @@ public class FireManager : MonoBehaviour {
 
     private void FirePistol(Vector3 velocityDirection)
     {
-        GameObject gunfireInstance = GameObject.Instantiate(Gunfire, transform.position, Quaternion.identity);
+        GameObject projectileToFire = gunDatsuManager.InGunDatsu ? GunDatsuGunfire : Gunfire;
+        GameObject gunfireInstance = GameObject.Instantiate(projectileToFire, transform.position, Quaternion.identity);
         Bullet bullet = gunfireInstance.GetComponent<Bullet>();
         bullet.SetFireDirection(velocityDirection, 0);
     }

@@ -15,6 +15,8 @@ public class Bullet : MonoBehaviour {
     private float speed = 15f;
     [SerializeField]
     private int damage = 1;
+    [SerializeField]
+    private bool gunDatsuProjectile;
 
     void Start () {
         bulletRigidbody = GetComponent<Rigidbody2D>();
@@ -27,12 +29,13 @@ public class Bullet : MonoBehaviour {
 		
 	}
 
-    void OnCollisionEnter2D(Collision2D collision)
+    void OnTriggerEnter2D(Collider2D other)
     {
-        if (collision.gameObject.tag == Constants.Tags.Enemy)
-            collision.gameObject.GetComponent<EnemyStatusManager>().ReceiveBulletDamage(damage);
+        if (other.tag == Constants.Tags.Enemy)
+            other.gameObject.GetComponent<EnemyStatusManager>().ReceiveBulletDamage(damage);
 
-        Destroy(gameObject);
+        if(!gunDatsuProjectile)
+            Destroy(gameObject);
     }
 
     public void SetFireDirection(Vector2 direction, float rotationOffset)

@@ -23,6 +23,7 @@ public class GunDatsuManager : MonoBehaviour {
     private Vector2 castDirection;
     private Rigidbody2D playerRigidbody;
     private Animator animator;
+    private CameraManager cameraManager;
 
     [SerializeField]
     private GameObject aimLine;
@@ -33,6 +34,7 @@ public class GunDatsuManager : MonoBehaviour {
         movementManager = GetComponent<MovementManager>();
         playerRigidbody = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        cameraManager = Camera.main.GetComponent<CameraManager>();
         InGunDatsu = false;
         energyCurrent = energyMax;
     }
@@ -68,6 +70,7 @@ public class GunDatsuManager : MonoBehaviour {
         aimLineInstance = Instantiate(aimLine).GetComponent<LineRenderer>();
         InGunDatsu = true;
         movementManager.StartGunDatsuMovement();
+        cameraManager.ShowTargets();
         animator.SetBool("Dash", InGunDatsu);
     }
 
@@ -82,6 +85,7 @@ public class GunDatsuManager : MonoBehaviour {
         InGunDatsu = false;
         energyCurrent = energyMax;
         movementManager.EndGunDatsuMovement();
+        cameraManager.HideTargets();
         animator.SetBool("Dash", InGunDatsu);
     }
 

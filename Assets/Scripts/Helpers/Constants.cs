@@ -9,5 +9,6 @@ public class Constants {
         public static string Player = "Player";
         public static string Enemy = "Enemy";
         public static string Hitbox = "Hitbox";
+        public static string GunDatsuBullet = "GunDatsuBullet";
     }
 }
