@@ -8,8 +8,9 @@ public class GunDatsuManager : MonoBehaviour {
     private float timeSlowRatio = 0.1f;
 
     [SerializeField]
-    private float gunDatsuMeterMax = 100;
-    private float gunDatsuMeterCurrent;
+    public float energyMax = 100;
+    [ReadOnly]
+    public float energyCurrent;
     [SerializeField]
     private float gunDatsuDrainAmountPerSecond = 20;
 
@@ -33,7 +34,7 @@ public class GunDatsuManager : MonoBehaviour {
         playerRigidbody = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         InGunDatsu = false;
-        gunDatsuMeterCurrent = gunDatsuMeterMax;
+        energyCurrent = energyMax;
     }
 
     void Update() {
@@ -43,8 +44,8 @@ public class GunDatsuManager : MonoBehaviour {
 
     private void DrainMeter()
     {
-        gunDatsuMeterCurrent -= gunDatsuDrainAmountPerSecond * Time.unscaledDeltaTime;
-        if (gunDatsuMeterCurrent <= 0)
+        energyCurrent -= gunDatsuDrainAmountPerSecond * Time.unscaledDeltaTime;
+        if (energyCurrent <= 0)
             EndGunDatsu();
     }
 
@@ -79,7 +80,7 @@ public class GunDatsuManager : MonoBehaviour {
         Time.timeScale = 1;
         Destroy(aimLineInstance.gameObject);
         InGunDatsu = false;
-        gunDatsuMeterCurrent = gunDatsuMeterMax;
+        energyCurrent = energyMax;
         movementManager.EndGunDatsuMovement();
         animator.SetBool("Dash", InGunDatsu);
     }

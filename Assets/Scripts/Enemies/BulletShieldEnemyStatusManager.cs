@@ -28,7 +28,7 @@ public class BulletShieldEnemyStatusManager : EnemyStatusManager {
     {
         base.Start();
         currentShieldHealth = maxShieldHealth;
-        //StartCoroutine(AttackLoop());
+        StartCoroutine(AttackLoop());
         meleeHitbox = GetComponentInChildren<EnemyMeleeHitbox>();
         meleeHitbox.playerStatus = playerStatus;
     }

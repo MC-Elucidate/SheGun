@@ -5,23 +5,28 @@ using UnityEngine.UI;
 
 public class HUDManager : MonoBehaviour {
 
-    public Text healthText;
-    public Text ammoText;
+    public Slider healthSlider;
+    public Slider energySlider;
 
     private int health;
+    private float energy;
 
     private PlayerStatusManager playerStatus;
-    private FireManager fireManager;
+    private GunDatsuManager gunDatsuManager;
 
     void Start () {
         GameObject player = GameObject.FindGameObjectWithTag("Player");
         playerStatus = player.GetComponent<PlayerStatusManager>();
-        fireManager = player.GetComponent<FireManager>();
+        gunDatsuManager = player.GetComponent<GunDatsuManager>();
         health = playerStatus.Health;
+        energy = gunDatsuManager.energyMax;
+        energySlider.maxValue = energy;
+        healthSlider.maxValue = playerStatus.MaxHealth;
 	}
 	
 	void Update () {
         SetHealthText();
+        SetEnergy();
 	}
 
     private void SetHealthText()
@@ -29,7 +34,16 @@ public class HUDManager : MonoBehaviour {
         if (health != playerStatus.Health)
         {
             health = playerStatus.Health;
-            healthText.text = "HP: " + health + "/" + playerStatus.MaxHealth;
+            healthSlider.value = health;
+        }
+    }
+
+    private void SetEnergy()
+    {
+        if (energy != gunDatsuManager.energyCurrent)
+        {
+            energy = gunDatsuManager.energyCurrent;
+            energySlider.value = energy;
         }
     }
 }
