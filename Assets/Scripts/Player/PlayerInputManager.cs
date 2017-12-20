@@ -32,6 +32,10 @@ public class PlayerInputManager : MonoBehaviour {
     private void MovementInput()
     {
         float input = Input.GetAxis("Horizontal");
+        if (input > 0)
+            input = 1;
+        else if (input < 0)
+            input = -1;
         movementManager.MovementInput = input;
     }
 

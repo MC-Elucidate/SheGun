@@ -35,6 +35,8 @@ public class MovementManager : MonoBehaviour {
 
     private float regularGravityScale;
 
+    private bool CanMove{ get { return playerStatus.playerState == EPlayerState.FreeMovement; } }
+
     void Start () {
         playerRigidbody = GetComponent<Rigidbody2D>();
         playerStatus = GetComponent<PlayerStatusManager>();
@@ -57,8 +59,13 @@ public class MovementManager : MonoBehaviour {
         if (!HasMovementFreedom)
             return;
 
-        if (MovementInput != 0 && HasMovementFreedom)
+        if (!CanMove)
+            return;
+
+        if (HasMovementFreedom)
             playerRigidbody.velocity = new Vector2(MovementInput * regularRunSpeed, playerRigidbody.velocity.y);
+
+        print(playerRigidbody.velocity);
     }
 
     private void CheckIsGrounded()
@@ -128,7 +135,7 @@ public class MovementManager : MonoBehaviour {
 
     void LateUpdate()
     {
-        animator.SetFloat("VelocityX", playerRigidbody.velocity.x);
+        animator.SetFloat("VelocityX", MovementInput);
         animator.SetFloat("VelocityY", playerRigidbody.velocity.y);
     }
 

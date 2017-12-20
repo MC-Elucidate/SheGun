@@ -11,6 +11,9 @@ public class PlayerStatusManager : MonoBehaviour {
     [SerializeField]
     public int Health;
 
+    [ReadOnly]
+    public EPlayerState playerState;
+
     private Vector2 respawnLocation;
     private SpriteRenderer sprite;
     private MovementManager movementManager;
@@ -24,6 +27,7 @@ public class PlayerStatusManager : MonoBehaviour {
         movementManager = GetComponent<MovementManager>();
         defaultColour = sprite.color;
         damageFlashColour = Color.red;
+        playerState = EPlayerState.FreeMovement;
     }
 	
 	void Update () {
