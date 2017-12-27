@@ -37,6 +37,13 @@ public class PlayerInputManager : MonoBehaviour {
         else if (input < 0)
             input = -1;
         movementManager.MovementInput = input;
+
+
+
+        if (Input.GetButtonDown("Dash"))
+            movementManager.DashPressed();
+        if (Input.GetButtonUp("Dash"))
+            movementManager.DashReleased();
     }
 
     private void FireInput()
@@ -93,10 +100,6 @@ public class PlayerInputManager : MonoBehaviour {
 
     private void GunDatsuInput()
     {
-
-        if (Input.GetButtonDown("Dodge"))
-            gunDatsuManager.DodgePressed();
-
         if (Input.GetButtonDown("GunDatsu"))
             gunDatsuManager.GunDatsuPressed();
         if (Input.GetButtonUp("GunDatsu"))

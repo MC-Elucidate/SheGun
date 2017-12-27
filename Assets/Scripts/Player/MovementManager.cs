@@ -30,12 +30,18 @@ public class MovementManager : MonoBehaviour {
     private float JumpPower = 8f;
     [SerializeField]
     private float damageKickbackPower = 5f;
+
     [SerializeField]
     private float dashSpeed = 15f;
+    private float currentDashTime = 0;
+    [SerializeField]
+    private float maxDashTime = 1;
 
     private float regularGravityScale;
 
     private bool CanMove{ get { return playerStatus.playerState == EPlayerState.FreeMovement; } }
+
+    private bool IsDashing { get { return playerStatus.playerState == EPlayerState.Dashing; } }
 
     void Start () {
         playerRigidbody = GetComponent<Rigidbody2D>();
@@ -58,6 +64,15 @@ public class MovementManager : MonoBehaviour {
     {
         if (!HasMovementFreedom)
             return;
+
+        if (IsDashing)
+        {
+            playerRigidbody.velocity = DirectionHelper.GetDirectionVector(forwardDirection) * dashSpeed;
+            currentDashTime += Time.deltaTime;
+            if (currentDashTime > maxDashTime)
+                DashReleased();
+            return;
+        }
 
         if (!CanMove)
             return;
@@ -127,6 +142,16 @@ public class MovementManager : MonoBehaviour {
         DisableMovement();
     }
 
+    public void DashPressed()
+    {
+        playerStatus.playerState = EPlayerState.Dashing;
+    }
+    public void DashReleased()
+    {
+        playerStatus.playerState = EPlayerState.FreeMovement;
+        currentDashTime = 0;
+    }
+
     public void DashInDirectionOf(Transform target)
     {
         Vector2 direction = (target.transform.position - transform.position).normalized;
@@ -135,6 +160,7 @@ public class MovementManager : MonoBehaviour {
 
     void LateUpdate()
     {
+        animator.SetBool("Dash", IsDashing);
         animator.SetFloat("VelocityX", MovementInput);
         animator.SetFloat("VelocityY", playerRigidbody.velocity.y);
     }
