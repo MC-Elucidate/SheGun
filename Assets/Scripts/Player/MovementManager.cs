@@ -37,11 +37,16 @@ public class MovementManager : MonoBehaviour {
     [SerializeField]
     private float maxDashTime = 1;
 
+    public Vector2 RootMotionOffset;
+    private Vector3 initialPosition;
+
     private float regularGravityScale;
 
     private bool CanMove{ get { return playerStatus.playerState == EPlayerState.FreeMovement; } }
 
     private bool IsDashing { get { return playerStatus.playerState == EPlayerState.Dashing; } }
+
+    private bool IsExecuting { get { return playerStatus.playerState == EPlayerState.Executing; } }
 
     void Start () {
         playerRigidbody = GetComponent<Rigidbody2D>();
@@ -74,13 +79,16 @@ public class MovementManager : MonoBehaviour {
             return;
         }
 
+        if (IsExecuting)
+        {
+            transform.position = initialPosition + new Vector3(RootMotionOffset.x, RootMotionOffset.y);
+            print(initialPosition + new Vector3(RootMotionOffset.x, RootMotionOffset.y));
+        }
+
         if (!CanMove)
             return;
-
-        if (HasMovementFreedom)
-            playerRigidbody.velocity = new Vector2(MovementInput * regularRunSpeed, playerRigidbody.velocity.y);
-
-        print(playerRigidbody.velocity);
+        
+        playerRigidbody.velocity = new Vector2(MovementInput * regularRunSpeed, playerRigidbody.velocity.y);
     }
 
     private void CheckIsGrounded()
@@ -144,10 +152,14 @@ public class MovementManager : MonoBehaviour {
 
     public void DashPressed()
     {
+        if (!CanMove)
+            return;
         playerStatus.playerState = EPlayerState.Dashing;
     }
     public void DashReleased()
     {
+        if (!IsDashing)
+            return;
         playerStatus.playerState = EPlayerState.FreeMovement;
         currentDashTime = 0;
     }
@@ -167,12 +179,15 @@ public class MovementManager : MonoBehaviour {
 
     private void SetSpriteDirection()
     {
-        if (playerRigidbody.velocity.x < 0 && forwardDirection == EDirection.Right)
+        if (!CanMove)
+            return;
+
+        if (MovementInput < 0 && forwardDirection == EDirection.Right)
         {
             forwardDirection = EDirection.Left;
             FlipSprite();
         }
-        else if (playerRigidbody.velocity.x > 0 && forwardDirection == EDirection.Left)
+        else if (MovementInput > 0 && forwardDirection == EDirection.Left)
         {
             forwardDirection = EDirection.Right;
             FlipSprite();
@@ -201,14 +216,38 @@ public class MovementManager : MonoBehaviour {
         timeSinceMovementDisabled = 0;
     }
 
-    public void StartGunDatsuMovement()
+    public void DisableRigidbodyEffects()
     {
         playerRigidbody.velocity = new Vector2(0, 0);
         playerRigidbody.gravityScale = 0;
     }
 
-    public void EndGunDatsuMovement()
+    public void EnableRigidbodyEffects()
     {
         playerRigidbody.gravityScale = regularGravityScale;
+    }
+
+    public void OnCollisionEnter2D(Collision2D other)
+    {
+        if (!IsDashing)
+            return;
+        if (other.gameObject.tag == Constants.Tags.Enemy)
+        {
+            EnemyStatusManager enemy = other.gameObject.GetComponent<EnemyStatusManager>();
+            if (enemy.IsExecutable())
+            {
+                animator.SetTrigger("Execute");
+                playerStatus.playerState = EPlayerState.Executing;
+                initialPosition = transform.position;
+                DisableRigidbodyEffects();
+                enemy.ReceiveMeleeDamage(100);
+            }
+        }
+    }
+
+    public void EndExecution()
+    {
+        playerStatus.playerState = EPlayerState.FreeMovement;
+        EnableRigidbodyEffects();
     }
 }

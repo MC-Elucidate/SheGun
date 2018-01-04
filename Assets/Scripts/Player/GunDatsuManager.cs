@@ -69,7 +69,7 @@ public class GunDatsuManager : MonoBehaviour {
         Time.timeScale = timeSlowRatio;
         aimLineInstance = Instantiate(aimLine).GetComponent<LineRenderer>();
         InGunDatsu = true;
-        movementManager.StartGunDatsuMovement();
+        movementManager.DisableRigidbodyEffects();
         cameraManager.ShowTargets();
         animator.SetBool("Dash", InGunDatsu);
     }
@@ -84,7 +84,7 @@ public class GunDatsuManager : MonoBehaviour {
         Destroy(aimLineInstance.gameObject);
         InGunDatsu = false;
         energyCurrent = energyMax;
-        movementManager.EndGunDatsuMovement();
+        movementManager.EnableRigidbodyEffects();
         cameraManager.HideTargets();
         animator.SetBool("Dash", InGunDatsu);
     }

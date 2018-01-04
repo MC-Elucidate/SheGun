@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 9e019802eb271074e81df30b260e896c
-timeCreated: 1513591218
+timeCreated: 1514996197
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -18,26 +18,26 @@ TextureImporter:
     21300022: zero_11
     21300024: zero_12
     21300026: zero_13
-    21300028: zero_14
+    21300028: zero_execute_6
     21300030: zero_15
     21300032: zero_16
     21300034: zero_17
     21300036: zero_18
     21300038: zero_19
-    21300040: zero_20
-    21300042: zero_21
+    21300040: zero_execute_4
+    21300042: zero_execute_5
     21300044: zero_22
-    21300046: zero_23
-    21300048: zero_24
-    21300050: zero_25
-    21300052: zero_26
+    21300046: zero_execute_2
+    21300048: zero_execute_3
+    21300050: zero_execute_7
+    21300052: zero_execute_8
     21300054: zero_27
-    21300056: zero_28
+    21300056: zero_execute_1
     21300058: zero_29
     21300060: zero_30
-    21300062: zero_31
+    21300062: zero_execute_9
     21300064: zero_32
-    21300066: zero_33
+    21300066: zero_execute_10
     21300068: zero_34
     21300070: zero_35
     21300072: zero_36
@@ -57,9 +57,9 @@ TextureImporter:
     21300100: zero_50
     21300102: zero_51
     21300104: zero_52
-    21300106: zero_53
+    21300106: zero_execute_11
     21300108: zero_54
-    21300110: zero_55
+    21300110: zero_execute_12
     21300112: zero_56
     21300114: zero_57
     21300116: zero_58
@@ -437,57 +437,15 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: zero_14
+      name: zero_execute_6
       rect:
         serializedVersion: 2
         x: 461
         y: 840
         width: 93
         height: 120
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: zero_15
-      rect:
-        serializedVersion: 2
-        x: 609
-        y: 861
-        width: 43
-        height: 99
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: zero_16
-      rect:
-        serializedVersion: 2
-        x: 710
-        y: 880
-        width: 36
-        height: 88
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: zero_17
-      rect:
-        serializedVersion: 2
-        x: 807
-        y: 879
-        width: 35
-        height: 86
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.23085104, y: 0.25498912}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -507,43 +465,29 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: zero_19
-      rect:
-        serializedVersion: 2
-        x: 900
-        y: 849
-        width: 36
-        height: 121
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: zero_20
+      name: zero_execute_4
       rect:
         serializedVersion: 2
         x: 275
-        y: 760
+        y: 827
         width: 89
-        height: 182
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        height: 115
+      alignment: 9
+      pivot: {x: 0.21429032, y: 0.39289764}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: zero_21
+      name: zero_execute_5
       rect:
         serializedVersion: 2
         x: 368
         y: 828
         width: 88
         height: 114
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.24716325, y: 0.3780175}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -563,57 +507,57 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: zero_23
+      name: zero_execute_2
       rect:
         serializedVersion: 2
         x: 86
         y: 830
         width: 92
         height: 97
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.2495186, y: 0.41398323}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: zero_24
+      name: zero_execute_3
       rect:
         serializedVersion: 2
         x: 183
         y: 829
         width: 88
         height: 100
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.21104345, y: 0.42848328}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: zero_25
+      name: zero_execute_7
       rect:
         serializedVersion: 2
         x: 561
         y: 834
-        width: 46
-        height: 93
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        width: 92
+        height: 126
+      alignment: 9
+      pivot: {x: 0.2149698, y: 0.29188222}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: zero_26
+      name: zero_execute_8
       rect:
         serializedVersion: 2
         x: 660
         y: 842
-        width: 46
-        height: 85
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        width: 87
+        height: 126
+      alignment: 9
+      pivot: {x: 0.23055644, y: 0.22566296}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -633,57 +577,29 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: zero_28
+      name: zero_execute_1
       rect:
         serializedVersion: 2
         x: 3
-        y: 848
-        width: 50
-        height: 44
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        y: 832
+        width: 80
+        height: 60
+      alignment: 9
+      pivot: {x: 0.3063088, y: 0.6324381}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: zero_29
-      rect:
-        serializedVersion: 2
-        x: 34
-        y: 833
-        width: 44
-        height: 46
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: zero_30
-      rect:
-        serializedVersion: 2
-        x: 714
-        y: 873
-        width: 5
-        height: 8
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: zero_31
+      name: zero_execute_9
       rect:
         serializedVersion: 2
         x: 757
         y: 838
-        width: 46
-        height: 85
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        width: 86
+        height: 127
+      alignment: 9
+      pivot: {x: 0.22742338, y: 0.22782357}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -703,15 +619,15 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: zero_33
+      name: zero_execute_10
       rect:
         serializedVersion: 2
         x: 849
         y: 839
-        width: 46
-        height: 85
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        width: 89
+        height: 132
+      alignment: 9
+      pivot: {x: 0.22321859, y: 0.22308303}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -738,104 +654,6 @@ TextureImporter:
         y: 854
         width: 5
         height: 7
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: zero_36
-      rect:
-        serializedVersion: 2
-        x: 707
-        y: 847
-        width: 6
-        height: 12
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: zero_37
-      rect:
-        serializedVersion: 2
-        x: 713
-        y: 857
-        width: 4
-        height: 5
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: zero_38
-      rect:
-        serializedVersion: 2
-        x: 717
-        y: 864
-        width: 8
-        height: 9
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: zero_39
-      rect:
-        serializedVersion: 2
-        x: 805
-        y: 846
-        width: 5
-        height: 10
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: zero_40
-      rect:
-        serializedVersion: 2
-        x: 811
-        y: 854
-        width: 9
-        height: 17
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: zero_41
-      rect:
-        serializedVersion: 2
-        x: 56
-        y: 750
-        width: 34
-        height: 64
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: zero_42
-      rect:
-        serializedVersion: 2
-        x: 163
-        y: 789
-        width: 21
-        height: 21
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -969,71 +787,29 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: zero_52
-      rect:
-        serializedVersion: 2
-        x: 163
-        y: 771
-        width: 6
-        height: 10
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: zero_53
+      name: zero_execute_11
       rect:
         serializedVersion: 2
         x: 3
         y: 682
-        width: 53
-        height: 85
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        width: 88
+        height: 132
+      alignment: 9
+      pivot: {x: 0.22910318, y: 0.22308303}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: zero_54
-      rect:
-        serializedVersion: 2
-        x: 66
-        y: 731
-        width: 8
-        height: 19
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: zero_55
+      name: zero_execute_12
       rect:
         serializedVersion: 2
         x: 98
         y: 682
-        width: 60
-        height: 85
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: zero_56
-      rect:
-        serializedVersion: 2
-        x: 159
-        y: 737
-        width: 9
-        height: 22
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        width: 87
+        height: 131
+      alignment: 9
+      pivot: {x: 0.2259895, y: 0.21793652}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1046,20 +822,6 @@ TextureImporter:
         y: 698
         width: 65
         height: 66
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: zero_58
-      rect:
-        serializedVersion: 2
-        x: 62
-        y: 712
-        width: 7
-        height: 18
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}

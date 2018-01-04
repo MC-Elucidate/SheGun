@@ -7,6 +7,8 @@ public class EnemyStatusManager : MonoBehaviour {
 
     [SerializeField]
     protected int Health;
+    [SerializeField]
+    protected int executableThreshold;
 
     protected GameObject player;
     protected PlayerStatusManager playerStatus;
@@ -36,10 +38,8 @@ public class EnemyStatusManager : MonoBehaviour {
         return true;
     }
 
-    public virtual void ReceiveMeleeDamage(bool launching, int damage)
+    public virtual void ReceiveMeleeDamage(int damage)
     {
-        if (launching)
-            Launched();
         if (damage > 0)
             TakeDamage(damage);
     }
@@ -48,7 +48,7 @@ public class EnemyStatusManager : MonoBehaviour {
     {
         Health -= damage;
         if (Health <= 0)
-            Destroy(gameObject, 0.15f);
+            Destroy(gameObject, 0.5f);
         StartCoroutine(DamageFlash());
 
     }
@@ -65,8 +65,8 @@ public class EnemyStatusManager : MonoBehaviour {
         sprite.color = defaultColour;
     }
 
-    public virtual bool PerformingDesperationAttack()
+    public virtual bool IsExecutable()
     {
-        return false;
+        return Health < executableThreshold;
     }
 }

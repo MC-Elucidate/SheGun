@@ -24,7 +24,7 @@ public class MeleeHitbox : MonoBehaviour {
             EnemiesInRange.Remove(other.GetComponent<EnemyStatusManager>());
     }
 
-    public void AttackEnemies(bool launchingAttack, int damage)
+    public void AttackEnemies(int damage)
     {
         List<EnemyStatusManager> nullEnemies = new List<EnemyStatusManager>();
         foreach (EnemyStatusManager enemy in EnemiesInRange)
@@ -35,7 +35,7 @@ public class MeleeHitbox : MonoBehaviour {
                 continue;
             }
             else
-                enemy.ReceiveMeleeDamage(launchingAttack, damage);
+                enemy.ReceiveMeleeDamage(damage);
         }
             RemoveNullEnemies(nullEnemies);
     }

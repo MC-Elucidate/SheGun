@@ -8,9 +8,6 @@ public class MeleeManager : MonoBehaviour {
     private int slashDamage = 1;
 
     [SerializeField]
-    private int launchDamage = 0;
-
-    [SerializeField]
     private AudioClip slashSound;
 
     private AudioSource audioSource;
@@ -53,16 +50,11 @@ public class MeleeManager : MonoBehaviour {
         audioSource.PlayOneShot(slashSound);
     }
 
-    private void LaunchAttack()
-    {
-        meleeHitbox.AttackEnemies(true, launchDamage);
-    }
-
     private void SlashAttack()
     {
         playerStatus.playerState = EPlayerState.Attacking;
         animator.SetTrigger("Attack");
-        meleeHitbox.AttackEnemies(false, slashDamage);
+        meleeHitbox.AttackEnemies(slashDamage);
     }
 
     private void EndAttack()

@@ -2,5 +2,6 @@
 {
     FreeMovement,
     Attacking,
-    Dashing
+    Dashing,
+    Executing
 }

@@ -36,7 +36,7 @@ public class GunDatsuHitbox : MonoBehaviour {
             }
             else
             {
-                if (firstEnemy == null && enemy.PerformingDesperationAttack())
+                if (firstEnemy == null && enemy.IsExecutable())
                     firstEnemy = enemy;
             }
             

@@ -14,8 +14,6 @@ public class BulletShieldEnemyStatusManager : EnemyStatusManager, IEntityWithWea
     [SerializeField]
     private int meleeDamage = 2;
     [SerializeField]
-    private int desperationThreshold = 5;
-    [SerializeField]
     private GameObject desperationSignal;
     [SerializeField]
     private GameObject fallingProjectile;
@@ -48,18 +46,21 @@ public class BulletShieldEnemyStatusManager : EnemyStatusManager, IEntityWithWea
         return base.ReceiveBulletDamage(damage);
     }
 
-    public override void ReceiveMeleeDamage(bool launching, int damage)
+    public override void ReceiveMeleeDamage(int damage)
     {
         if (currentShieldHealth > 0)
         {
             currentShieldHealth -= damage;
-            base.ReceiveMeleeDamage(launching, damage);
+            base.ReceiveMeleeDamage(damage);
 
             if (currentShieldHealth <= 0)
                 defaultColour = vulnerableColour;
         }
         else
-            base.ReceiveMeleeDamage(launching, damage);
+            base.ReceiveMeleeDamage(damage);
+
+        if (Health < executableThreshold)
+            defaultColour = Color.green;
     }
 
     private IEnumerator AttackLoop()
@@ -72,12 +73,6 @@ public class BulletShieldEnemyStatusManager : EnemyStatusManager, IEntityWithWea
 
                 if ((player.transform.position - transform.position).sqrMagnitude > 50)
                     continue;
-                
-                if (Health <= desperationThreshold)
-                {
-                    SignalDesperationAttack();
-                    yield return new WaitForSecondsRealtime(1f);
-                }
                 animator.SetTrigger("Attack");
                 
             }
@@ -87,11 +82,6 @@ public class BulletShieldEnemyStatusManager : EnemyStatusManager, IEntityWithWea
     private void AttackCast()
     {
         meleeHitbox.BeginAttack(meleeDamage);
-    }
-
-    public override bool PerformingDesperationAttack()
-    {
-        return (Health <= desperationThreshold) && attacking;
     }
 
     private void SignalDesperationAttack()
