@@ -34,6 +34,7 @@ public class MovementManager : MonoBehaviour {
     [SerializeField]
     private float dashSpeed = 15f;
     private float currentDashTime = 0;
+    public bool airDashed = false;
     [SerializeField]
     private float maxDashTime = 1;
 
@@ -93,7 +94,10 @@ public class MovementManager : MonoBehaviour {
 
     private void CheckIsGrounded()
     {
-        IsGrounded = Mathf.Abs(playerRigidbody.velocity.y) < 0.0001;
+        IsGrounded = Mathf.Abs(playerRigidbody.velocity.y) < 0.0001 && !IsDashing;
+
+        if (airDashed)
+            airDashed = !IsGrounded;
     }
 
     public void Jump()
@@ -154,13 +158,20 @@ public class MovementManager : MonoBehaviour {
     {
         if (!CanMove)
             return;
+        if (!IsGrounded && airDashed)
+            return;
+
         playerStatus.playerState = EPlayerState.Dashing;
+        DisableRigidbodyEffects();
+        if (!IsGrounded)
+            airDashed = true;
     }
     public void DashReleased()
     {
         if (!IsDashing)
             return;
         playerStatus.playerState = EPlayerState.FreeMovement;
+        EnableRigidbodyEffects();
         currentDashTime = 0;
     }
 
@@ -237,17 +248,17 @@ public class MovementManager : MonoBehaviour {
             if (enemy.IsExecutable())
             {
                 animator.SetTrigger("Execute");
-                playerStatus.playerState = EPlayerState.Executing;
                 initialPosition = transform.position;
                 DisableRigidbodyEffects();
                 enemy.ReceiveMeleeDamage(100);
+                playerStatus.playerState = EPlayerState.Executing;
             }
         }
     }
 
     public void EndExecution()
     {
-        playerStatus.playerState = EPlayerState.FreeMovement;
-        EnableRigidbodyEffects();
+        playerStatus.playerState = EPlayerState.Dashing;
+        DashReleased();
     }
 }
