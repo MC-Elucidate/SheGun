@@ -43,7 +43,7 @@ public class MovementManager : MonoBehaviour {
 
     private float regularGravityScale;
 
-    private bool CanMove{ get { return playerStatus.playerState == EPlayerState.FreeMovement; } }
+    private bool CanMove{ get { return playerStatus.playerState == EPlayerState.FreeMovement || playerStatus.playerState == EPlayerState.FreeMoveAttack; } }
 
     private bool IsDashing { get { return playerStatus.playerState == EPlayerState.Dashing; } }
 
@@ -102,7 +102,7 @@ public class MovementManager : MonoBehaviour {
 
     public void Jump()
     {
-        if (!IsGrounded)
+        if (!IsGrounded || !CanMove)
             return;
         playerRigidbody.velocity = new Vector2(playerRigidbody.velocity.x, JumpPower);
     }

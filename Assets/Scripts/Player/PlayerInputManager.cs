@@ -22,9 +22,9 @@ public class PlayerInputManager : MonoBehaviour {
 	
 	void Update ()
     {
+        MeleeInput();
         MovementInput();
         FireInput();
-        MeleeInput();
         JumpInput();
         GunDatsuInput();
 	}
@@ -95,7 +95,7 @@ public class PlayerInputManager : MonoBehaviour {
     private void MeleeInput()
     {
         if (Input.GetButtonDown("Attack"))
-            meleeManager.AttackPressed(directionPressed);
+            meleeManager.AttackPressed();
     }
 
     private void GunDatsuInput()

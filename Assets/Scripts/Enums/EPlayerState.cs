@@ -3,5 +3,6 @@
     FreeMovement,
     Attacking,
     Dashing,
-    Executing
+    Executing,
+    FreeMoveAttack
 }

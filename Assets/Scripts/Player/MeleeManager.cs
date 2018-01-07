@@ -5,7 +5,9 @@ using UnityEngine;
 public class MeleeManager : MonoBehaviour {
 
     [SerializeField]
-    private int slashDamage = 1;
+    private int slashDamage = 5;
+    [SerializeField]
+    private int airSlashDamage = 10;
 
     [SerializeField]
     private AudioClip slashSound;
@@ -17,12 +19,14 @@ public class MeleeManager : MonoBehaviour {
     private int currentAttackNumber = 0;
     private int maxAttackNumber = 3;
     private PlayerStatusManager playerStatus;
+    private MovementManager movementManager;
     private Animator animator;
 
     void Start () {
         meleeHitbox = GetComponentInChildren<MeleeHitbox>();
         audioSource = GetComponent<AudioSource>();
         playerStatus = GetComponent<PlayerStatusManager>();
+        movementManager = GetComponent<MovementManager>();
         animator = GetComponent<Animator>();
 	}
 	
@@ -30,7 +34,7 @@ public class MeleeManager : MonoBehaviour {
 		
 	}
 
-    public void AttackPressed(EDirection direction)
+    public void AttackPressed()
     {
         //switch (direction)
         //{
@@ -43,11 +47,19 @@ public class MeleeManager : MonoBehaviour {
         //        SlashAttack();
         //        break;
         //}
-        ++currentAttackNumber;
-        if (currentAttackNumber > maxAttackNumber)
-            return;
-        SlashAttack();
-        audioSource.PlayOneShot(slashSound);
+
+       // print(movementManager.IsGrounded);
+        if (movementManager.IsGrounded)
+        {
+            ++currentAttackNumber;
+            if (currentAttackNumber > maxAttackNumber)
+                return;
+            SlashAttack();
+        }
+        else
+        {
+            AirAttack();
+        }
     }
 
     private void SlashAttack()
@@ -55,6 +67,17 @@ public class MeleeManager : MonoBehaviour {
         playerStatus.playerState = EPlayerState.Attacking;
         animator.SetTrigger("Attack");
         meleeHitbox.AttackEnemies(slashDamage);
+        audioSource.PlayOneShot(slashSound);
+    }
+
+    private void AirAttack()
+    {
+        if (playerStatus.playerState == EPlayerState.FreeMoveAttack)
+            return;
+        playerStatus.playerState = EPlayerState.FreeMoveAttack;
+        animator.SetTrigger("Attack");
+        meleeHitbox.AttackEnemies(airSlashDamage);
+        audioSource.PlayOneShot(slashSound);
     }
 
     private void EndAttack()
