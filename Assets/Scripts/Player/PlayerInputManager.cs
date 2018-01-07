@@ -89,7 +89,9 @@ public class PlayerInputManager : MonoBehaviour {
     private void JumpInput()
     {
         if (Input.GetButtonDown("Jump"))
-            movementManager.Jump();
+            movementManager.JumpPressed();
+        if (Input.GetButtonUp("Jump"))
+            movementManager.JumpReleased();
     }
 
     private void MeleeInput()

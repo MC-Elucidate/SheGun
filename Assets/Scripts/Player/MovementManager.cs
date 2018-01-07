@@ -41,7 +41,15 @@ public class MovementManager : MonoBehaviour {
     public Vector2 RootMotionOffset;
     private Vector3 initialPosition;
 
+
+    [SerializeField]
+    private float maxJumpHoldTime = .25f;
+    private float currentJumpHoldTime = 0;
+    private bool jumpHeld = false;
+    [SerializeField]
+    private float jumpGravityScale = 1;
     private float regularGravityScale;
+
 
     private bool CanMove{ get { return playerStatus.playerState == EPlayerState.FreeMovement || playerStatus.playerState == EPlayerState.FreeMoveAttack; } }
 
@@ -71,6 +79,13 @@ public class MovementManager : MonoBehaviour {
         if (!HasMovementFreedom)
             return;
 
+        if (jumpHeld)
+        {
+            currentJumpHoldTime += Time.deltaTime;
+            if (currentJumpHoldTime > maxJumpHoldTime)
+                JumpReleased();
+        }
+
         if (IsDashing)
         {
             playerRigidbody.velocity = DirectionHelper.GetDirectionVector(forwardDirection) * dashSpeed;
@@ -78,6 +93,13 @@ public class MovementManager : MonoBehaviour {
             if (currentDashTime > maxDashTime)
                 DashReleased();
             return;
+        }
+
+        if (jumpHeld)
+        {
+            currentJumpHoldTime += Time.deltaTime;
+            if (currentJumpHoldTime > maxJumpHoldTime)
+                JumpReleased();
         }
 
         if (IsExecuting)
@@ -100,11 +122,22 @@ public class MovementManager : MonoBehaviour {
             airDashed = !IsGrounded;
     }
 
-    public void Jump()
+    public void JumpPressed()
     {
         if (!IsGrounded || !CanMove)
             return;
         playerRigidbody.velocity = new Vector2(playerRigidbody.velocity.x, JumpPower);
+        playerRigidbody.gravityScale = jumpGravityScale;
+        jumpHeld = true;
+    }
+
+    public void JumpReleased()
+    {
+        if (!CanMove)
+            return;
+        playerRigidbody.gravityScale = regularGravityScale;
+        jumpHeld = false;
+        currentJumpHoldTime = 0;
     }
 
     public void KickBack(EDirection direction)
