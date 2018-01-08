@@ -14,12 +14,9 @@ public class BulletShieldEnemyStatusManager : EnemyStatusManager, IEntityWithWea
     [SerializeField]
     private int meleeDamage = 2;
     [SerializeField]
-    private GameObject desperationSignal;
-    [SerializeField]
     private GameObject fallingProjectile;
 
     private EnemyMeleeHitbox meleeHitbox;
-    private EDirection forwardDirection = EDirection.Left;
     public bool attacking = false;
     
 
@@ -32,10 +29,10 @@ public class BulletShieldEnemyStatusManager : EnemyStatusManager, IEntityWithWea
         meleeHitbox.playerStatus = playerStatus;
     }
 
-    void Update()
+    protected override void Update()
     {
+       base.Update();
        attacking = animator.GetCurrentAnimatorStateInfo(0).IsName("Attack");
-       SetSpriteDirection();
     }
 
     public override bool ReceiveBulletDamage(int damage)
@@ -58,9 +55,6 @@ public class BulletShieldEnemyStatusManager : EnemyStatusManager, IEntityWithWea
         }
         else
             base.ReceiveMeleeDamage(damage);
-
-        if (Health < executableThreshold)
-            defaultColour = Color.green;
     }
 
     private IEnumerator AttackLoop()
@@ -84,35 +78,9 @@ public class BulletShieldEnemyStatusManager : EnemyStatusManager, IEntityWithWea
         meleeHitbox.BeginAttack(meleeDamage);
     }
 
-    private void SignalDesperationAttack()
-    {
-        GameObject signal = Instantiate(desperationSignal, transform.position, Quaternion.identity);
-        Destroy(signal, 1f);
-    }
-
     private void SummonFallingProjectileOverPlayer()
     {
         Instantiate(fallingProjectile, player.transform.position + new Vector3(0, 5, 0), Quaternion.identity);
-    }
-
-    private void SetSpriteDirection()
-    {
-        if (player.transform.position.x < transform.position.x && forwardDirection == EDirection.Right)
-        {
-            FlipSprite();
-            forwardDirection = EDirection.Left;
-        }
-        else if (player.transform.position.x > transform.position.x && forwardDirection == EDirection.Left)
-        {
-            forwardDirection = EDirection.Right;
-            FlipSprite();
-        }
-            
-    }
-
-    private void FlipSprite()
-    {
-        transform.localScale = new Vector3(transform.localScale.x * -1, transform.localScale.y, 1);
     }
 
     private void EndAttack()

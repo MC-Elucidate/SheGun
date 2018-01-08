@@ -104,8 +104,7 @@ public class MovementManager : MonoBehaviour {
 
         if (IsExecuting)
         {
-            transform.position = initialPosition + new Vector3(RootMotionOffset.x, RootMotionOffset.y);
-            print(initialPosition + new Vector3(RootMotionOffset.x, RootMotionOffset.y));
+            transform.position = initialPosition + (new Vector3(RootMotionOffset.x * DirectionHelper.GetDirectionVector(forwardDirection).x, RootMotionOffset.y));
         }
 
         if (!CanMove)

@@ -36,6 +36,9 @@ public class PlayerStatusManager : MonoBehaviour {
 
     public void ReceiveDamage(int damage, Transform sourceOfDamage)
     {
+        if (playerState == EPlayerState.Executing)
+            return;
+
         Health -= damage;
         if (Health <= 0)
         {

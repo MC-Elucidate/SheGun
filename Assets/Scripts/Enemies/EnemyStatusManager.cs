@@ -17,8 +17,9 @@ public class EnemyStatusManager : MonoBehaviour {
     protected SpriteRenderer sprite;
     protected Color defaultColour;
     private Color damageFlashColour;
+    protected EDirection forwardDirection = EDirection.Left;
 
-	protected virtual void Start () {
+    protected virtual void Start () {
         enemyRigidbody = GetComponent<Rigidbody2D>();
         sprite = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
@@ -28,9 +29,9 @@ public class EnemyStatusManager : MonoBehaviour {
         playerStatus = player.GetComponent<PlayerStatusManager>();
 	}
 	
-	void Update () {
-		
-	}
+	protected virtual void Update () {
+        SetSpriteDirection();
+    }
 
     public virtual bool ReceiveBulletDamage(int damage)
     {
@@ -49,6 +50,9 @@ public class EnemyStatusManager : MonoBehaviour {
         Health -= damage;
         if (Health <= 0)
             Destroy(gameObject, 0.5f);
+
+        if (Health < executableThreshold)
+            defaultColour = Color.green;
         StartCoroutine(DamageFlash());
 
     }
@@ -68,5 +72,27 @@ public class EnemyStatusManager : MonoBehaviour {
     public virtual bool IsExecutable()
     {
         return Health < executableThreshold;
+    }
+
+
+
+    private void SetSpriteDirection()
+    {
+        if (player.transform.position.x < transform.position.x && forwardDirection == EDirection.Right)
+        {
+            FlipSprite();
+            forwardDirection = EDirection.Left;
+        }
+        else if (player.transform.position.x > transform.position.x && forwardDirection == EDirection.Left)
+        {
+            forwardDirection = EDirection.Right;
+            FlipSprite();
+        }
+
+    }
+
+    private void FlipSprite()
+    {
+        transform.localScale = new Vector3(transform.localScale.x * -1, transform.localScale.y, 1);
     }
 }
