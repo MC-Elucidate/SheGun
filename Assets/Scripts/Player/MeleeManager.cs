@@ -51,6 +51,11 @@ public class MeleeManager : MonoBehaviour {
        // print(movementManager.IsGrounded);
         if (movementManager.IsGrounded)
         {
+            if (movementManager.IsMoving)
+            {
+                RunAttack();
+                return;
+            }
             ++currentAttackNumber;
             if (currentAttackNumber > maxAttackNumber)
                 return;
@@ -77,6 +82,16 @@ public class MeleeManager : MonoBehaviour {
         playerStatus.playerState = EPlayerState.FreeMoveAttack;
         animator.SetTrigger("Attack");
         meleeHitbox.AttackEnemies(airSlashDamage);
+        audioSource.PlayOneShot(slashSound);
+    }
+
+    private void RunAttack()
+    {
+        if (playerStatus.playerState == EPlayerState.FreeMoveAttack)
+            return;
+        playerStatus.playerState = EPlayerState.FreeMoveAttack;
+        animator.SetTrigger("Attack");
+        meleeHitbox.AttackEnemies(slashDamage);
         audioSource.PlayOneShot(slashSound);
     }
 

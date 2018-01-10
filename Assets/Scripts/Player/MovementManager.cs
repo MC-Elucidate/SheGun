@@ -53,6 +53,8 @@ public class MovementManager : MonoBehaviour {
 
     private bool CanMove{ get { return playerStatus.playerState == EPlayerState.FreeMovement || playerStatus.playerState == EPlayerState.FreeMoveAttack; } }
 
+    public bool IsMoving { get { return MovementInput != 0; } }
+
     private bool IsDashing { get { return playerStatus.playerState == EPlayerState.Dashing; } }
 
     private bool IsExecuting { get { return playerStatus.playerState == EPlayerState.Executing; } }
