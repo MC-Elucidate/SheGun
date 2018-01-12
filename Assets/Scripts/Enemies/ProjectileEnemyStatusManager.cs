@@ -25,4 +25,8 @@ public class ProjectileEnemyStatusManager : EnemyStatusManager {
             projectile.TargetPosition = player.transform.position;
         }
     }
+
+    public override void CollideWithPlayer()
+    {
+    }
 }

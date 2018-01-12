@@ -92,4 +92,8 @@ public class BulletShieldEnemyStatusManager : EnemyStatusManager, IEntityWithWea
     {
         print("ITAI!");
     }
+
+    public override void CollideWithPlayer()
+    {
+    }
 }

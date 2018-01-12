@@ -274,12 +274,10 @@ public class MovementManager : MonoBehaviour {
 
     public void OnCollisionEnter2D(Collision2D other)
     {
-        if (!IsDashing)
-            return;
         if (other.gameObject.tag == Constants.Tags.Enemy)
         {
             EnemyStatusManager enemy = other.gameObject.GetComponent<EnemyStatusManager>();
-            if (enemy.IsExecutable())
+            if (enemy.IsExecutable() && IsDashing)
             {
                 animator.SetTrigger("Execute");
                 initialPosition = transform.position;
@@ -287,6 +285,8 @@ public class MovementManager : MonoBehaviour {
                 enemy.ReceiveMeleeDamage(100);
                 playerStatus.playerState = EPlayerState.Executing;
             }
+            else
+                enemy.CollideWithPlayer();
         }
     }
 

@@ -11,16 +11,8 @@ public class FlyingEnemyStatusManager : EnemyStatusManager {
     private float triggerRange;
     [SerializeField]
     private float moveSpeed;
-
-    private new Rigidbody2D rigidbody;
-    private new Animator animator;
-
-    protected override void Start()
-    {
-        base.Start();
-        rigidbody = GetComponent<Rigidbody2D>();
-        animator = GetComponent<Animator>();
-    }
+    [SerializeField]
+    private int collisionDamage;
 
     protected override void Update()
     {
@@ -44,13 +36,19 @@ public class FlyingEnemyStatusManager : EnemyStatusManager {
     private void SetVelocity()
     {
         if (chasing)
-            rigidbody.velocity = (player.transform.position - transform.position).normalized * moveSpeed;
+            enemyRigidbody.velocity = (player.transform.position - transform.position).normalized * moveSpeed;
         else
-            rigidbody.velocity = new Vector3();
+            enemyRigidbody.velocity = new Vector3();
     }
 
     private void UpdateAnimator()
     {
         animator.SetBool("Chasing", chasing);
+    }
+
+    public override void CollideWithPlayer()
+    {
+        playerStatus.ReceiveDamage(collisionDamage, transform);
+        ReceiveMeleeDamage(100);
     }
 }

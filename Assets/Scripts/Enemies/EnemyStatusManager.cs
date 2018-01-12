@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class EnemyStatusManager : MonoBehaviour {
+public abstract class EnemyStatusManager : MonoBehaviour {
 
     [SerializeField]
     protected int Health;
@@ -12,7 +12,7 @@ public class EnemyStatusManager : MonoBehaviour {
 
     protected GameObject player;
     protected PlayerStatusManager playerStatus;
-    private Rigidbody2D enemyRigidbody;
+    protected Rigidbody2D enemyRigidbody;
     protected Animator animator;
     protected SpriteRenderer sprite;
     protected Color defaultColour;
@@ -95,4 +95,6 @@ public class EnemyStatusManager : MonoBehaviour {
     {
         transform.localScale = new Vector3(transform.localScale.x * -1, transform.localScale.y, 1);
     }
+
+    public abstract void CollideWithPlayer();
 }
