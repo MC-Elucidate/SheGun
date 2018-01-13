@@ -15,6 +15,12 @@ public class BulletShieldEnemyStatusManager : EnemyStatusManager, IEntityWithWea
     private int meleeDamage = 2;
     [SerializeField]
     private GameObject fallingProjectile;
+    [SerializeField]
+    private float timeBetweenAttacks = 3f;
+    private float timeSinceLastAttack = 0;
+    [SerializeField]
+    private float attackStateRange = 50;
+
 
     private EnemyMeleeHitbox meleeHitbox;
     public bool attacking = false;
@@ -24,7 +30,6 @@ public class BulletShieldEnemyStatusManager : EnemyStatusManager, IEntityWithWea
     {
         base.Start();
         currentShieldHealth = maxShieldHealth;
-        //StartCoroutine(AttackLoop());
         meleeHitbox = GetComponentInChildren<EnemyMeleeHitbox>();
         meleeHitbox.playerStatus = playerStatus;
     }
@@ -32,7 +37,7 @@ public class BulletShieldEnemyStatusManager : EnemyStatusManager, IEntityWithWea
     protected override void Update()
     {
        base.Update();
-       attacking = animator.GetCurrentAnimatorStateInfo(0).IsName("Attack");
+       AttackLoop();
     }
 
     public override bool ReceiveBulletDamage(int damage)
@@ -48,7 +53,7 @@ public class BulletShieldEnemyStatusManager : EnemyStatusManager, IEntityWithWea
         if (currentShieldHealth > 0)
         {
             currentShieldHealth -= damage;
-            base.ReceiveMeleeDamage(damage);
+            base.ReceiveMeleeDamage(1);
 
             if (currentShieldHealth <= 0)
                 defaultColour = vulnerableColour;
@@ -57,19 +62,22 @@ public class BulletShieldEnemyStatusManager : EnemyStatusManager, IEntityWithWea
             base.ReceiveMeleeDamage(damage);
     }
 
-    private IEnumerator AttackLoop()
+    private void AttackLoop()
     {
-        while (Health > 0)
-        {
-            if (!attacking)
-            {
-                yield return new WaitForSecondsRealtime(3f);
+        if ((player.transform.position - transform.position).sqrMagnitude > attackStateRange)
+            return;
 
-                if ((player.transform.position - transform.position).sqrMagnitude > 50)
-                    continue;
-                animator.SetTrigger("Attack");
-                
-            }
+        if (timeSinceLastAttack < timeBetweenAttacks)
+        {
+            timeSinceLastAttack += Time.deltaTime;
+            return;
+        }
+
+        if (!attacking && Health > 0)
+        {
+            attacking = true;
+            animator.SetTrigger("Attack");
+            timeSinceLastAttack = 0;
         }
     }
 
@@ -85,6 +93,7 @@ public class BulletShieldEnemyStatusManager : EnemyStatusManager, IEntityWithWea
 
     private void EndAttack()
     {
+        attacking = false;
         meleeHitbox.EndAttack();
     }
 
