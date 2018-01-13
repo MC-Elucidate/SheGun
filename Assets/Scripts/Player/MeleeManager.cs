@@ -95,7 +95,7 @@ public class MeleeManager : MonoBehaviour {
         audioSource.PlayOneShot(slashSound);
     }
 
-    private void EndAttack()
+    public void EndAttack()
     {
         playerStatus.playerState = EPlayerState.FreeMovement;
         currentAttackNumber = 0;

@@ -17,6 +17,7 @@ public class PlayerStatusManager : MonoBehaviour {
     private Vector2 respawnLocation;
     private SpriteRenderer sprite;
     private MovementManager movementManager;
+    private MeleeManager meleeManager;
     private Color defaultColour;
     private Color damageFlashColour;
 
@@ -25,6 +26,7 @@ public class PlayerStatusManager : MonoBehaviour {
         respawnLocation = transform.position;
         sprite = GetComponent<SpriteRenderer>();
         movementManager = GetComponent<MovementManager>();
+        meleeManager = GetComponent<MeleeManager>();
         defaultColour = sprite.color;
         damageFlashColour = Color.red;
         playerState = EPlayerState.FreeMovement;
@@ -45,6 +47,8 @@ public class PlayerStatusManager : MonoBehaviour {
             Respawn();
             return;
         }
+        movementManager.DashReleased();
+        meleeManager.EndAttack();
         EDirection directionOfContact = sourceOfDamage.position.x >= transform.position.x ? EDirection.DownRight : EDirection.DownLeft;
         movementManager.KickBack(directionOfContact);
         StartCoroutine(DamageFlash());

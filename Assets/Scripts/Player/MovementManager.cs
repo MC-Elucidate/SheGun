@@ -283,6 +283,7 @@ public class MovementManager : MonoBehaviour {
                 initialPosition = transform.position;
                 DisableRigidbodyEffects();
                 enemy.ReceiveMeleeDamage(100);
+                airDashed = false;  
                 playerStatus.playerState = EPlayerState.Executing;
             }
             else

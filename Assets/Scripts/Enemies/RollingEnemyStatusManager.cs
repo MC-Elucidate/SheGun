@@ -19,12 +19,17 @@ public class RollingEnemyStatusManager : EnemyStatusManager {
     protected override void Update()
     {
         base.Update();
-        enemyRigidbody.velocity = (DirectionHelper.GetDirectionVector(moveDirection) * moveSpeed) + new Vector2(0, enemyRigidbody.velocity.y);
+        if (Health > 0)
+            enemyRigidbody.velocity = (DirectionHelper.GetDirectionVector(moveDirection) * moveSpeed) + new Vector2(0, enemyRigidbody.velocity.y);
+        else
+            enemyRigidbody.velocity = new Vector2();
     }
 
 
     public override void CollideWithPlayer()
     {
+        if (Health <= 0)
+            return;
         playerStatus.ReceiveDamage(collisionDamage, transform);
         ReceiveMeleeDamage(100);
     }

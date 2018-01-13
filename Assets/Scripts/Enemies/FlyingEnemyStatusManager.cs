@@ -14,6 +14,12 @@ public class FlyingEnemyStatusManager : EnemyStatusManager {
     [SerializeField]
     private int collisionDamage;
 
+    protected override void Start()
+    {
+        base.Start();
+        sprite.color = Color.green;
+    }
+
     protected override void Update()
     {
         base.Update();
@@ -24,7 +30,12 @@ public class FlyingEnemyStatusManager : EnemyStatusManager {
 
     private void CheckPlayerRange()
     {
-        if ((player.transform.position - transform.position).sqrMagnitude <= triggerRange)
+        if (Health <= 0)
+        {
+            chasing = false;
+            return;
+        }
+            if ((player.transform.position - transform.position).sqrMagnitude <= triggerRange)
         {
             if (!chasing)
                 chasing = true;
@@ -48,6 +59,8 @@ public class FlyingEnemyStatusManager : EnemyStatusManager {
 
     public override void CollideWithPlayer()
     {
+        if (Health <= 0)
+            return;
         playerStatus.ReceiveDamage(collisionDamage, transform);
         ReceiveMeleeDamage(100);
     }
