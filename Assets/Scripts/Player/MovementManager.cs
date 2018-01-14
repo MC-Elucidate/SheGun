@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(GroundDetector))]
 public class MovementManager : MonoBehaviour {
 
     private Rigidbody2D playerRigidbody;
     private PlayerStatusManager playerStatus;
     private Animator animator;
     private SpriteRenderer sprite;
+    private GroundDetector groundDetector;
 
     [ReadOnly]
     public bool IsGrounded;
@@ -64,6 +66,7 @@ public class MovementManager : MonoBehaviour {
         playerStatus = GetComponent<PlayerStatusManager>();
         animator = GetComponent<Animator>();
         sprite = GetComponent<SpriteRenderer>();
+        groundDetector = GetComponentInChildren<GroundDetector>();
         IsGrounded = false;
         HasMovementFreedom = true;
         regularGravityScale = playerRigidbody.gravityScale;
@@ -117,7 +120,7 @@ public class MovementManager : MonoBehaviour {
 
     private void CheckIsGrounded()
     {
-        IsGrounded = Mathf.Abs(playerRigidbody.velocity.y) < 0.0001 && !IsDashing;
+        IsGrounded = groundDetector.isGrounded;
 
         if (airDashed)
             airDashed = !IsGrounded;
