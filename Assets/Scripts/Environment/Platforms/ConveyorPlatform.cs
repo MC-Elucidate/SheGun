@@ -23,9 +23,10 @@ public class ConveyorPlatform : MonoBehaviour {
         platformRigidbody = GetComponent<Rigidbody2D>();
 	}
 	
-	void Update ()
+	void FixedUpdate ()
     {
         //platformRigidbody.velocity = new Vector2(speed, 0);
+        platformRigidbody.MovePosition(new Vector2(transform.position.x + (speed * Time.fixedDeltaTime), transform.position.y));
     }
 
     private enum EConveyorState

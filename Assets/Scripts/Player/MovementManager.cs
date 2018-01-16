@@ -114,8 +114,9 @@ public class MovementManager : MonoBehaviour {
 
         if (!CanMove)
             return;
-        
-        playerRigidbody.velocity = new Vector2(MovementInput * regularRunSpeed, playerRigidbody.velocity.y);
+
+        if (MovementInput != 0)
+            playerRigidbody.velocity = new Vector2(MovementInput * regularRunSpeed, playerRigidbody.velocity.y);
     }
 
     private void CheckIsGrounded()
@@ -222,7 +223,7 @@ public class MovementManager : MonoBehaviour {
     {
         animator.SetBool("Dash", IsDashing);
         animator.SetFloat("VelocityX", MovementInput);
-        animator.SetFloat("VelocityY", playerRigidbody.velocity.y);
+        animator.SetFloat("VelocityY", IsGrounded ? 0 : playerRigidbody.velocity.y);
     }
 
     private void SetSpriteDirection()
