@@ -11,6 +11,7 @@ public class MovementManager : MonoBehaviour {
     private Animator animator;
     private SpriteRenderer sprite;
     private GroundDetector groundDetector;
+    private WallclimbDetector wallclimbDetector;
 
     [ReadOnly]
     public bool IsGrounded;
@@ -52,6 +53,9 @@ public class MovementManager : MonoBehaviour {
     private float jumpGravityScale = 1;
     private float regularGravityScale;
 
+    [SerializeField]
+    private float wallslideSpeed = -2;
+
 
     private bool CanMove{ get { return playerStatus.playerState == EPlayerState.FreeMovement || playerStatus.playerState == EPlayerState.FreeMoveAttack; } }
 
@@ -61,12 +65,15 @@ public class MovementManager : MonoBehaviour {
 
     private bool IsExecuting { get { return playerStatus.playerState == EPlayerState.Executing; } }
 
+    private bool IsWallclimbing { get { return wallclimbDetector.IsTouchingWall && forwardDirection == wallclimbDetector.wallDirection && playerStatus.playerState == EPlayerState.FreeMovement; } }
+
     void Start () {
         playerRigidbody = GetComponent<Rigidbody2D>();
         playerStatus = GetComponent<PlayerStatusManager>();
         animator = GetComponent<Animator>();
         sprite = GetComponent<SpriteRenderer>();
         groundDetector = GetComponentInChildren<GroundDetector>();
+        wallclimbDetector = GetComponentInChildren<WallclimbDetector>();
         IsGrounded = false;
         HasMovementFreedom = true;
         regularGravityScale = playerRigidbody.gravityScale;
@@ -75,6 +82,7 @@ public class MovementManager : MonoBehaviour {
 	void Update () {
         CheckMovementFreedom();
         CheckIsGrounded();
+        CheckIfAirDashed();
         MovementUpdate();
         SetSpriteDirection();
 	}
@@ -116,22 +124,32 @@ public class MovementManager : MonoBehaviour {
             return;
 
         if (MovementInput != 0)
-            playerRigidbody.velocity = new Vector2(MovementInput * regularRunSpeed, playerRigidbody.velocity.y);
+        {
+            float yVelocity = IsWallclimbing ? wallslideSpeed : playerRigidbody.velocity.y;
+            playerRigidbody.velocity = new Vector2(MovementInput * regularRunSpeed, yVelocity);
+        }
     }
 
     private void CheckIsGrounded()
     {
         IsGrounded = groundDetector.isGrounded;
+    }
 
+    private void CheckIfAirDashed()
+    {
         if (airDashed)
-            airDashed = !IsGrounded;
+            airDashed = !(IsGrounded || IsWallclimbing);
     }
 
     public void JumpPressed()
     {
-        if (!IsGrounded || !CanMove)
+        if ((!IsGrounded || !CanMove) && !IsWallclimbing)
             return;
-        playerRigidbody.velocity = new Vector2(playerRigidbody.velocity.x, JumpPower);
+        
+        if (IsWallclimbing)
+            playerRigidbody.AddForce(new Vector2(JumpPower * -2 * DirectionHelper.GetDirectionVector(forwardDirection).x, JumpPower));
+        else
+            playerRigidbody.AddForce(new Vector2(0, JumpPower));
         playerRigidbody.gravityScale = jumpGravityScale;
         jumpHeld = true;
     }
