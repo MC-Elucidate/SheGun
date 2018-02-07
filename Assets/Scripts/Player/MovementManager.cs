@@ -242,6 +242,7 @@ public class MovementManager : MonoBehaviour {
         animator.SetBool("Dash", IsDashing);
         animator.SetFloat("VelocityX", MovementInput);
         animator.SetFloat("VelocityY", IsGrounded ? 0 : playerRigidbody.velocity.y);
+        animator.SetBool("Wallclimb", IsWallclimbing);
     }
 
     private void SetSpriteDirection()
