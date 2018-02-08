@@ -66,4 +66,10 @@ public class PlayerStatusManager : MonoBehaviour {
         yield return new WaitForSecondsRealtime(0.1f);
         sprite.color = defaultColour;
     }
+
+    public void UpgradeHealth()
+    {
+        MaxHealth += 2;
+        Health = MaxHealth;
+    }
 }
