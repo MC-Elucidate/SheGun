@@ -72,4 +72,13 @@ public class PlayerStatusManager : MonoBehaviour {
         MaxHealth += 2;
         Health = MaxHealth;
     }
+
+    public void OutOfBounds(Vector3 recoveryPosition)
+    {
+        if (Health > 1)
+        {
+            transform.position = recoveryPosition;
+        }
+        ReceiveDamage(1, transform);
+    }
 }
