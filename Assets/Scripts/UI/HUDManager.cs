@@ -26,7 +26,7 @@ public class HUDManager : MonoBehaviour {
         gunDatsuManager = player.GetComponent<GunDatsuManager>();
         health = playerStatus.Health;
         maxHealth = playerStatus.MaxHealth;
-        energy = gunDatsuManager.energyMax;
+        energy = playerStatus.Energy;
         energySlider.maxValue = energy;
         healthSlider.maxValue = playerStatus.MaxHealth;
         healthSliderSizeMultiplier = healthTransform.sizeDelta.x / maxHealth;
@@ -49,9 +49,9 @@ public class HUDManager : MonoBehaviour {
 
     private void SetEnergy()
     {
-        if (energy != gunDatsuManager.energyCurrent)
+        if (energy != playerStatus.Energy)
         {
-            energy = gunDatsuManager.energyCurrent;
+            energy = playerStatus.Energy;
             energySlider.value = energy;
         }
     }

@@ -9,6 +9,10 @@ public abstract class EnemyStatusManager : MonoBehaviour {
     protected int Health;
     [SerializeField]
     protected int executableThreshold;
+    [SerializeField]
+    public int executeHealthDrop;
+    [SerializeField]
+    public int executeEnergyDrop;
 
     protected GameObject player;
     protected PlayerStatusManager playerStatus;

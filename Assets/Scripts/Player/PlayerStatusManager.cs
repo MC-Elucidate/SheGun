@@ -10,6 +10,11 @@ public class PlayerStatusManager : MonoBehaviour {
     [ReadOnly]
     [SerializeField]
     public int Health;
+    [SerializeField]
+    public float MaxEnergy = 100;
+    [ReadOnly]
+    [SerializeField]
+    public float Energy;
 
     [ReadOnly]
     public EPlayerState playerState;
@@ -23,6 +28,7 @@ public class PlayerStatusManager : MonoBehaviour {
 
     void Start () {
         Health = MaxHealth;
+        Energy = MaxEnergy;
         respawnLocation = transform.position;
         sprite = GetComponent<SpriteRenderer>();
         movementManager = GetComponent<MovementManager>();
@@ -80,5 +86,25 @@ public class PlayerStatusManager : MonoBehaviour {
             transform.position = recoveryPosition;
         }
         ReceiveDamage(1, transform);
+    }
+
+    public void RegenerateOnExecute(EnemyStatusManager enemy)
+    {
+        RegenHealth(enemy.executeHealthDrop);
+        RegenEnergy(enemy.executeEnergyDrop);
+    }
+
+    private void RegenHealth(int amount)
+    {
+        Health += amount;
+        if (Health > MaxHealth)
+            Health = MaxHealth;
+    }
+
+    private void RegenEnergy(int amount)
+    {
+        Energy += amount;
+        if (Energy > MaxEnergy)
+            Energy = MaxEnergy;
     }
 }

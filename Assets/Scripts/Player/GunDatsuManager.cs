@@ -8,14 +8,11 @@ public class GunDatsuManager : MonoBehaviour {
     private float timeSlowRatio = 0.1f;
 
     [SerializeField]
-    public float energyMax = 100;
-    [ReadOnly]
-    public float energyCurrent;
-    [SerializeField]
     private float gunDatsuDrainAmountPerSecond = 20;
 
     private GunDatsuHitbox gunDatsuHitbox;
     private MovementManager movementManager;
+    private PlayerStatusManager playerStatus;
     
     public bool InGunDatsu { get; private set; }
 
@@ -32,11 +29,11 @@ public class GunDatsuManager : MonoBehaviour {
     void Start() {
         gunDatsuHitbox = GetComponentInChildren<GunDatsuHitbox>();
         movementManager = GetComponent<MovementManager>();
+        playerStatus = GetComponent<PlayerStatusManager>();
         playerRigidbody = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         cameraManager = Camera.main.GetComponent<CameraManager>();
         InGunDatsu = false;
-        energyCurrent = energyMax;
     }
 
     void Update() {
@@ -46,8 +43,8 @@ public class GunDatsuManager : MonoBehaviour {
 
     private void DrainMeter()
     {
-        energyCurrent -= gunDatsuDrainAmountPerSecond * Time.unscaledDeltaTime;
-        if (energyCurrent <= 0)
+        playerStatus.Energy -= gunDatsuDrainAmountPerSecond * Time.unscaledDeltaTime;
+        if (playerStatus.Energy <= 0)
             EndGunDatsu();
     }
 
@@ -83,7 +80,6 @@ public class GunDatsuManager : MonoBehaviour {
         Time.timeScale = 1;
         Destroy(aimLineInstance.gameObject);
         InGunDatsu = false;
-        energyCurrent = energyMax;
         movementManager.EnableRigidbodyEffects();
         cameraManager.HideTargets();
         animator.SetBool("Dash", InGunDatsu);

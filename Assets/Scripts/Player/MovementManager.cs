@@ -306,7 +306,8 @@ public class MovementManager : MonoBehaviour {
                 initialPosition = transform.position;
                 DisableRigidbodyEffects();
                 enemy.ReceiveMeleeDamage(100);
-                airDashed = false;  
+                airDashed = false;
+                playerStatus.RegenerateOnExecute(enemy);
                 playerStatus.playerState = EPlayerState.Executing;
             }
             else
