@@ -4,8 +4,11 @@ using UnityEngine;
 
 public class FlyingEnemyStatusManager : EnemyStatusManager {
 
+    [SerializeField]
+    private bool chasingType = false;
+
     [ReadOnly]
-    private bool chasing = false;
+    private bool isChasingPlayer = false;
 
     [SerializeField]
     private float triggerRange;
@@ -30,23 +33,26 @@ public class FlyingEnemyStatusManager : EnemyStatusManager {
 
     private void CheckPlayerRange()
     {
+        if (!chasingType)
+            return;
+
         if (Health <= 0)
         {
-            chasing = false;
+            isChasingPlayer = false;
             return;
         }
             if ((player.transform.position - transform.position).sqrMagnitude <= triggerRange)
         {
-            if (!chasing)
-                chasing = true;
+            if (!isChasingPlayer)
+                isChasingPlayer = true;
         }
         else
-            chasing = false;
+            isChasingPlayer = false;
     }
 
     private void SetVelocity()
     {
-        if (chasing)
+        if (isChasingPlayer)
             enemyRigidbody.velocity = (player.transform.position - transform.position).normalized * moveSpeed;
         else
             enemyRigidbody.velocity = new Vector3();
@@ -54,7 +60,7 @@ public class FlyingEnemyStatusManager : EnemyStatusManager {
 
     private void UpdateAnimator()
     {
-        animator.SetBool("Chasing", chasing);
+        animator.SetBool("Chasing", isChasingPlayer);
     }
 
     public override void CollideWithPlayer()
