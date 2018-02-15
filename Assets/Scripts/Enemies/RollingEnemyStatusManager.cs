@@ -12,17 +12,36 @@ public class RollingEnemyStatusManager : EnemyStatusManager {
     [SerializeField]
     private int collisionDamage;
 
+    private WallDetector wallDetector;
+
     protected override void Start () {
         base.Start();
+        wallDetector = GetComponentInChildren<WallDetector>();
 	}
 
     protected override void Update()
     {
         base.Update();
+        CheckWallDetection();
+        UpdateVelocity();
+
+    }
+
+
+    private void UpdateVelocity()
+    {
         if (Health > 0)
             enemyRigidbody.velocity = (DirectionHelper.GetDirectionVector(moveDirection) * moveSpeed) + new Vector2(0, enemyRigidbody.velocity.y);
         else
             enemyRigidbody.velocity = new Vector2();
+    }
+
+    private void CheckWallDetection()
+    {
+        if (wallDetector.IsTouchingWall && wallDetector.wallDirection == moveDirection)
+        {
+            moveDirection = moveDirection == EDirection.Left ? EDirection.Right : EDirection.Left;
+        }
     }
 
 

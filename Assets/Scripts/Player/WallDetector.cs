@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WallclimbDetector : MonoBehaviour {
+public class WallDetector : MonoBehaviour {
 
     [ReadOnly]
     public bool IsTouchingWall = false;

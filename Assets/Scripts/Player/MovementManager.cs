@@ -11,7 +11,7 @@ public class MovementManager : MonoBehaviour {
     private Animator animator;
     private SpriteRenderer sprite;
     private GroundDetector groundDetector;
-    private WallclimbDetector wallclimbDetector;
+    private WallDetector wallclimbDetector;
 
     [ReadOnly]
     public bool IsGrounded;
@@ -73,7 +73,7 @@ public class MovementManager : MonoBehaviour {
         animator = GetComponent<Animator>();
         sprite = GetComponent<SpriteRenderer>();
         groundDetector = GetComponentInChildren<GroundDetector>();
-        wallclimbDetector = GetComponentInChildren<WallclimbDetector>();
+        wallclimbDetector = GetComponentInChildren<WallDetector>();
         IsGrounded = false;
         HasMovementFreedom = true;
         regularGravityScale = playerRigidbody.gravityScale;
