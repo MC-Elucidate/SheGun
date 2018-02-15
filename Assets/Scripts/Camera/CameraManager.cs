@@ -21,8 +21,6 @@ public class CameraManager : MonoBehaviour {
         playerTransform = GameObject.FindGameObjectWithTag(Constants.Tags.Player).transform;
         camera = GetComponent<Camera>();
         this.transform.position = new Vector3(playerTransform.position.x, playerTransform.position.y + yOffset, transform.position.z);
-        defaultMask = camera.cullingMask;
-        targetMask = defaultMask | (1 << LayerMask.NameToLayer("GunDatsuTarget"));
     }
 	
 	void Update () {
@@ -41,14 +39,4 @@ public class CameraManager : MonoBehaviour {
         
         this.transform.position = new Vector3(newX, newY, transform.position.z);
 	}
-
-    public void ShowTargets()
-    {
-        camera.cullingMask = targetMask;
-    }
-
-    public void HideTargets()
-    {
-        camera.cullingMask = defaultMask;
-    }
 }

@@ -15,7 +15,6 @@ public class HUDManager : MonoBehaviour {
     private float energy;
 
     private PlayerStatusManager playerStatus;
-    private GunDatsuManager gunDatsuManager;
 
     private float healthSliderSizeMultiplier;
 
@@ -23,7 +22,6 @@ public class HUDManager : MonoBehaviour {
         healthTransform = healthSlider.gameObject.GetComponent<RectTransform>();
         GameObject player = GameObject.FindGameObjectWithTag("Player");
         playerStatus = player.GetComponent<PlayerStatusManager>();
-        gunDatsuManager = player.GetComponent<GunDatsuManager>();
         health = playerStatus.Health;
         maxHealth = playerStatus.MaxHealth;
         energy = playerStatus.Energy;

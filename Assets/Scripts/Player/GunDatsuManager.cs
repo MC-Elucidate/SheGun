@@ -67,7 +67,6 @@ public class GunDatsuManager : MonoBehaviour {
         aimLineInstance = Instantiate(aimLine).GetComponent<LineRenderer>();
         InGunDatsu = true;
         movementManager.DisableRigidbodyEffects();
-        cameraManager.ShowTargets();
         animator.SetBool("Dash", InGunDatsu);
     }
 
@@ -81,7 +80,6 @@ public class GunDatsuManager : MonoBehaviour {
         Destroy(aimLineInstance.gameObject);
         InGunDatsu = false;
         movementManager.EnableRigidbodyEffects();
-        cameraManager.HideTargets();
         animator.SetBool("Dash", InGunDatsu);
     }
 
