@@ -49,7 +49,7 @@ public abstract class EnemyStatusManager : MonoBehaviour {
             TakeDamage(damage);
     }
 
-    private void TakeDamage(int damage)
+    protected void TakeDamage(int damage)
     {
         Health -= damage;
         if (Health <= 0)

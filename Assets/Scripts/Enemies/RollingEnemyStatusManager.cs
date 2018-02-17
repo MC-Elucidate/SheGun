@@ -11,13 +11,16 @@ public class RollingEnemyStatusManager : EnemyStatusManager {
     private float moveSpeed;
     [SerializeField]
     private int collisionDamage;
+    [SerializeField]
+    private float lifespan;
 
     private WallDetector wallDetector;
 
-    protected override void Start () {
+    protected override void Start() {
         base.Start();
         wallDetector = GetComponentInChildren<WallDetector>();
-	}
+        StartCoroutine(Expire());
+    }
 
     protected override void Update()
     {
@@ -52,4 +55,11 @@ public class RollingEnemyStatusManager : EnemyStatusManager {
         playerStatus.ReceiveDamage(collisionDamage, transform);
         ReceiveMeleeDamage(100);
     }
+
+    private IEnumerator Expire()
+    {
+        yield return new WaitForSecondsRealtime(lifespan);
+        TakeDamage(100);
+    }
+
 }
