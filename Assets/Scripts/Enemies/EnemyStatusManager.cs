@@ -101,4 +101,9 @@ public abstract class EnemyStatusManager : MonoBehaviour {
     }
 
     public abstract void CollideWithPlayer();
+
+    public virtual void Executed()
+    {
+        TakeDamage(100);
+    }
 }

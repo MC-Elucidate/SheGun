@@ -13,6 +13,14 @@ public class RollingEnemyStatusManager : EnemyStatusManager {
     private int collisionDamage;
     [SerializeField]
     private float lifespan;
+    [SerializeField]
+    private float explodeTimer;
+    [SerializeField]
+    Vector2 executeLaunchForce;
+    [SerializeField]
+    GameObject explosionEffect;
+
+    private bool executed = false;
 
     private WallDetector wallDetector;
 
@@ -27,12 +35,15 @@ public class RollingEnemyStatusManager : EnemyStatusManager {
         base.Update();
         CheckWallDetection();
         UpdateVelocity();
-
     }
 
 
     private void UpdateVelocity()
     {
+
+        if (executed)
+            return;
+
         if (Health > 0)
             enemyRigidbody.velocity = (DirectionHelper.GetDirectionVector(moveDirection) * moveSpeed) + new Vector2(0, enemyRigidbody.velocity.y);
         else
@@ -41,6 +52,8 @@ public class RollingEnemyStatusManager : EnemyStatusManager {
 
     private void CheckWallDetection()
     {
+        if (executed)
+            return;
         if (wallDetector.IsTouchingWall && wallDetector.wallDirection == moveDirection)
         {
             moveDirection = moveDirection == EDirection.Left ? EDirection.Right : EDirection.Left;
@@ -50,6 +63,9 @@ public class RollingEnemyStatusManager : EnemyStatusManager {
 
     public override void CollideWithPlayer()
     {
+        if (executed)
+            return;
+
         if (Health <= 0)
             return;
         playerStatus.ReceiveDamage(collisionDamage, transform);
@@ -59,7 +75,29 @@ public class RollingEnemyStatusManager : EnemyStatusManager {
     private IEnumerator Expire()
     {
         yield return new WaitForSecondsRealtime(lifespan);
+
+        if (executed)
+            yield break;
+
         TakeDamage(100);
+    }
+
+    public override void Executed()
+    {
+        executed = true;
+        int launchDirectionMultiplier = (player.transform.position - transform.position).x < 0 ? 1 : -1;
+        print(launchDirectionMultiplier);
+        enemyRigidbody.velocity = Vector2.zero;
+        enemyRigidbody.AddForce(new Vector2(executeLaunchForce.x * launchDirectionMultiplier, executeLaunchForce.y));
+        StartCoroutine(Explode());
+    }
+
+    private IEnumerator Explode()
+    {
+        yield return new WaitForSecondsRealtime(explodeTimer);
+        GameObject explosion = Instantiate(explosionEffect, transform.position, Quaternion.identity);
+        Destroy(explosion, 2);
+        Destroy(gameObject);
     }
 
 }
