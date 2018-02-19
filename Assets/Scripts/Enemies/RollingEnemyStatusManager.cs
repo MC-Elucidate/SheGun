@@ -16,6 +16,8 @@ public class RollingEnemyStatusManager : EnemyStatusManager {
     [SerializeField]
     private float explodeTimer;
     [SerializeField]
+    private float explosionRadius;
+    [SerializeField]
     Vector2 executeLaunchForce;
     [SerializeField]
     GameObject explosionEffect;
@@ -86,7 +88,6 @@ public class RollingEnemyStatusManager : EnemyStatusManager {
     {
         executed = true;
         int launchDirectionMultiplier = (player.transform.position - transform.position).x < 0 ? 1 : -1;
-        print(launchDirectionMultiplier);
         enemyRigidbody.velocity = Vector2.zero;
         enemyRigidbody.AddForce(new Vector2(executeLaunchForce.x * launchDirectionMultiplier, executeLaunchForce.y));
         StartCoroutine(Explode());
@@ -96,8 +97,23 @@ public class RollingEnemyStatusManager : EnemyStatusManager {
     {
         yield return new WaitForSecondsRealtime(explodeTimer);
         GameObject explosion = Instantiate(explosionEffect, transform.position, Quaternion.identity);
+
+        Collider2D[] collidersHit = Physics2D.OverlapCircleAll(transform.position, explosionRadius);
+        
+        for (int i = 0; i < collidersHit.Length; i++)
+        {
+            if (collidersHit[i].GetComponent<ExplodableObject>() != null)
+                Destroy(collidersHit[i].gameObject);
+        }
+
         Destroy(explosion, 2);
         Destroy(gameObject);
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = new Color(1f, .5f, 0f, 1f);
+        Gizmos.DrawWireSphere(transform.position, explosionRadius);
     }
 
 }
