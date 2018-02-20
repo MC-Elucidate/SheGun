@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FlyingProjectileEnemyManager : EnemyStatusManager
+public class FlyingProjectileEnemyStatusManager : EnemyStatusManager
 {
 
     [SerializeField]

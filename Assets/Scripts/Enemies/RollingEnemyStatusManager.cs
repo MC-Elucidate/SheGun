@@ -5,8 +5,9 @@ using UnityEngine;
 
 public class RollingEnemyStatusManager : EnemyStatusManager {
 
+    [ReadOnly]
     [SerializeField]
-    private EDirection moveDirection = EDirection.Left;
+    public EDirection moveDirection = EDirection.Left;
     [SerializeField]
     private float moveSpeed;
     [SerializeField]
