@@ -11,4 +11,9 @@ public class Constants {
         public static string Hitbox = "Hitbox";
         public static string GunDatsuBullet = "GunDatsuBullet";
     }
+
+    public class Layers
+    {
+        public static string Player = "Player";
+    }
 }
