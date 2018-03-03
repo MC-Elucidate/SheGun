@@ -13,9 +13,15 @@ public class CameraManager : MonoBehaviour {
     private float yOffset;
 
     [SerializeField]
-    private bool yLock;
+    private float smoothTime;
+
     [SerializeField]
-    private bool xLock;
+    public bool yLock;
+    [SerializeField]
+    public bool xLock;
+
+    private float xLockPos;
+    private float yLockPos;
 
     void Start () {
         playerTransform = GameObject.FindGameObjectWithTag(Constants.Tags.Player).transform;
@@ -23,20 +29,49 @@ public class CameraManager : MonoBehaviour {
         this.transform.position = new Vector3(playerTransform.position.x, playerTransform.position.y + yOffset, transform.position.z);
     }
 	
-	void Update () {
+	void LateUpdate () {
         float newX, newY;
 
         if (xLock)
-            newX = transform.position.x;
+            newX = xLockPos;
         else
             newX = playerTransform.position.x;
 
         if (yLock)
-            newY = transform.position.y;
+            newY = yLockPos + yOffset;
         else
             newY = playerTransform.position.y + yOffset;
 
-        
-        this.transform.position = new Vector3(newX, newY, transform.position.z);
-	}
+
+        Vector3 velocity = Vector3.zero;
+        this.transform.position = Vector3.SmoothDamp(transform.position, new Vector3(newX, newY, transform.position.z), ref velocity, smoothTime);
+    }
+
+    public void ChangeXLock(bool shouldLock, float position)
+    {
+        if (shouldLock == xLock)
+            return;
+
+        if (shouldLock)
+        {
+            xLockPos = position;
+            xLock = true;
+        }
+        else
+            xLock = false;
+    }
+
+    public void ChangeYLock(bool shouldLock, float position)
+    {
+        if (shouldLock == yLock)
+            return;
+
+        if (shouldLock)
+        {
+            yLockPos = position;
+            yLock = true;
+        }
+        else
+            yLock = false;
+    }
 }
