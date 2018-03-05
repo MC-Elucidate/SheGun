@@ -15,5 +15,6 @@ public class Constants {
     public class Layers
     {
         public static string Player = "Player";
+        public static string ClimbableEnvironment = "ClimbableEnvironment";
     }
 }

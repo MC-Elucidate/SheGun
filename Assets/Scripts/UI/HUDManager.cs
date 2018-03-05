@@ -24,7 +24,7 @@ public class HUDManager : MonoBehaviour {
         playerStatus = player.GetComponent<PlayerStatusManager>();
         health = playerStatus.Health;
         maxHealth = playerStatus.MaxHealth;
-        energy = playerStatus.Energy;
+        energy = playerStatus.MaxEnergy;
         energySlider.maxValue = energy;
         healthSlider.maxValue = playerStatus.MaxHealth;
         healthSliderSizeMultiplier = healthTransform.sizeDelta.x / maxHealth;

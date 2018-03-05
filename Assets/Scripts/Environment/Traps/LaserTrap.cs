@@ -26,9 +26,11 @@ public class LaserTrap : MonoBehaviour {
     void Start()
     {
         player = GameObject.FindGameObjectWithTag(Constants.Tags.Player).GetComponent<PlayerStatusManager>();
-        RaycastHit2D hit = Physics2D.Linecast(transform.position, transform.position-new Vector3(0, 100, 0));
+        RaycastHit2D hit = Physics2D.Linecast(transform.position, transform.position-new Vector3(0, 100, 0), LayerMask.GetMask(Constants.Layers.ClimbableEnvironment));
         laserLength = hit.distance;
         beamDestination = hit.point;
+        print(laserLength);
+        print(beamDestination);
     }
 
     void Update ()
