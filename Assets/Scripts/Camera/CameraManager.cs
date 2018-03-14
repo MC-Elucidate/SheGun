@@ -65,7 +65,7 @@ public class CameraManager : MonoBehaviour {
     {
         if (shouldLock == yLock)
             return;
-
+        
         if (shouldLock)
         {
             yLockPos = position;
